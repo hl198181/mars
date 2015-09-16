@@ -28,3 +28,6 @@ node_modules
 
 # Mac os
 .DS_Store
+
+# IDEA
+.idea
