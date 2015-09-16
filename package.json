@@ -1,0 +1,40 @@
+{
+  "name": "mars",
+  "version": "1.0.0",
+  "description": "基于Express的一些列常用快速搭建web应用的中间件，主要包括安全、导航、服务代理等等。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hl198181/mars.git"
+  },
+  "keywords": [
+    "express",
+    "security",
+    "web"
+  ],
+  "author": "Leon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hl198181/mars/issues"
+  },
+  "homepage": "https://github.com/hl198181/mars#readme",
+  "maintainers": [
+    {
+      "name": "Leon",
+      "email": "63781162@qq.com"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Leon",
+      "email": "63781162@qq.com"
+    }
+  ],
+  "dependencies": {
+    "debug": "^2.2.0",
+    "express": "^4.13.3"
+  }
+}
