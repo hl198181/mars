@@ -1,16 +1,25 @@
-/**
- * Created by Leon on 15/9/16.
+/*!
+ * mars-security
+ * Copyright(c) 2015 Leon Huang
+ * MIT Licensed
  */
 
 'use strict';
 
 var express = require("express");
 var Mars = require("../../lib/mars");
-var Filter = Mars.Security.Filter;
-var filterStoreFS = new Filter.FilterStoreFS({"path": "123"});
+var path = require("path");
+
 var app = express();
 
-app.use(Filter({"store": filterStoreFS}));
+var filter = Mars.Security.Filter(app, {
+    "store": new Mars.Security.Filter.FilterStoreFS({
+        "root": "/",
+        "path": path.join(__dirname, "./filter.json")
+    })
+});
+
+app.use(filter);
 
 app.get("/", function (req, res, next) {
     res.send("hello world!");

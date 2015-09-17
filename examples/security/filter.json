@@ -1,0 +1,24 @@
+{
+  "all": [
+    {
+      "path": "/home*",
+      "needLogin": false
+    },
+    {
+      "path": "/admin*",
+      "needLogin": true,
+      "role": [
+        "admin"
+      ]
+    },
+    {
+      "path": "/app*",
+      "needLogin": true,
+      "role": [
+        "user"
+      ]
+    }
+  ],
+  "get": [],
+  "post": []
+}
