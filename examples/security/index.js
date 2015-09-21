@@ -7,27 +7,102 @@
 'use strict';
 
 var express = require("express");
-var Mars = require("../../lib/mars");
+var passport = require("passport");
+var session = require('express-session');
+var bodyParser = require("body-parser");
+var cookieParser = require('cookie-parser');
+var LocalStrategy = require("passport-local").Strategy;
+var mars = require("../../lib");
+var securityFilter = mars.SecurityFilter;
+var HandlerLocal = require("../../lib/")
 var path = require("path");
+var pause = require('pause')
 
 var app = express();
 
-var filter = Mars.Security.Filter(app, {
-    "store": new Mars.Security.Filter.FilterStoreFS({
-        "root": "/",
-        "path": path.join(__dirname, "./filter.json")
-    })
+app.use(cookieParser());
+app.use(session({secret: "need change"}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+//配置本地登录验证策略
+passport.use("local", new LocalStrategy({
+        "usernameField": "userno",
+        "passwordField": "password"
+    },
+    function (username, password, done) {
+        var user = {
+            id: "1",
+            username: "admin",
+            password: "pass"
+        }
+
+        if (username !== user.username) {
+            return done(null, false, {"message": "登录失败！无效的用户编号！"});
+        }
+
+        if (password !== user.password) {
+            return done(null, false, {"message": "登录失败！无效的密码！"});
+        }
+
+        return done(null, user);
+    }
+));
+
+//配置用户持久化以及读取用户
+passport.serializeUser(function (user, done) {
+    done(null, user);
 });
 
-app.use(filter);
+passport.deserializeUser(function (user, done) {
+    done(null, user);
+});
 
-app.get("/", function (req, res, next) {
-    res.send("hello world!");
+//配置路由
+app.post("/auth", passport.authenticate('local', {
+    successRedirect: "/hello",
+    failureRedirect: "/login"
+}));
+
+
+//初始化安全路由过滤器
+securityFilter.init();
+
+//注册过滤器处理器策略
+securityFilter.use("default",mars.SecurityFilter.HandlerLocal({}));
+
+//注册过滤器配置策略
+securityFilter.store(new mars.SecurityFilter.StoreFS({
+    "path": path.join(__dirname, "./filter.json")
+}));
+securityFilter.store(new mars.SecurityFilter.StoreFS({
+    "path": path.join(__dirname, "./filter1.json")
+}));
+
+
+//注册过滤器路由
+securityFilter.registerRoutes("/", app);
+
+app.get("/hello", function (req, res, next) {
+    res.send("hello world! - hello");
+});
+
+app.get("/login", function (req, res, next) {
+    res.send("hello world!-login");
 });
 
 app.use(function (err, req, res, next) {
     res.send(err.stack);
 });
+
+function sleep(milliSecond) {
+    var startTime = new Date().getTime();
+    console.log(startTime);
+    while (new Date().getTime() <= milliSecond + startTime) {
+    }
+    console.log(new Date().getTime());
+}
 
 app.listen(3000);
 console.log('Express started on port 3000');
