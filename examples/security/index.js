@@ -65,12 +65,8 @@ app.post("/auth", passport.authenticate('local', {
     failureRedirect: "/login"
 }));
 
-
-//初始化安全路由过滤器
-securityFilter.init();
-
 //注册过滤器处理器策略
-securityFilter.use("default",mars.SecurityFilter.HandlerLocal({}));
+securityFilter.use("default",new mars.SecurityFilter.HandlerLocal());
 
 //注册过滤器配置策略
 securityFilter.store(new mars.SecurityFilter.StoreFS({
@@ -79,7 +75,6 @@ securityFilter.store(new mars.SecurityFilter.StoreFS({
 securityFilter.store(new mars.SecurityFilter.StoreFS({
     "path": path.join(__dirname, "./filter1.json")
 }));
-
 
 //注册过滤器路由
 securityFilter.registerRoutes("/", app);
