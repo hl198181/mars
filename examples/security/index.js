@@ -14,9 +14,8 @@ var cookieParser = require('cookie-parser');
 var LocalStrategy = require("passport-local").Strategy;
 var mars = require("../../lib");
 var securityFilter = mars.SecurityFilter;
-var HandlerLocal = require("../../lib/")
 var path = require("path");
-var pause = require('pause')
+var pause = require('pause');
 
 var app = express();
 
@@ -66,7 +65,8 @@ app.post("/auth", passport.authenticate('local', {
 }));
 
 //注册过滤器处理器策略
-securityFilter.use("default",new mars.SecurityFilter.HandlerLocal());
+securityFilter.use(new mars.SecurityFilter.LocalHandler());
+securityFilter.use(new mars.SecurityFilter.DemoHandler());
 
 //注册过滤器配置策略
 securityFilter.store(new mars.SecurityFilter.StoreFS({
@@ -77,7 +77,7 @@ securityFilter.store(new mars.SecurityFilter.StoreFS({
 }));
 
 //注册过滤器路由
-securityFilter.registerRoutes("/", app);
+app.use(securityFilter.filter());
 
 app.get("/hello", function (req, res, next) {
     res.send("hello world! - hello");
