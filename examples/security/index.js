@@ -20,7 +20,7 @@ var pause = require('pause');
 var app = express();
 
 app.use(cookieParser());
-app.use(session({secret: "need change"}));
+app.use(session({secret: "345435345"}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -65,7 +65,16 @@ app.post("/auth", passport.authenticate('local', {
 }));
 
 //注册过滤器处理器策略
-securityFilter.use(new mars.SecurityFilter.LocalHandler());
+securityFilter.use(new mars.SecurityFilter.LocalHandler({
+    "validLogin": function (req, done) {
+        debug("检查登录");
+        done(true);
+    },
+    "validRole": function (req, done) {
+
+    }
+}));
+
 securityFilter.use(new mars.SecurityFilter.DemoHandler());
 
 //注册过滤器配置策略
@@ -77,7 +86,7 @@ securityFilter.store(new mars.SecurityFilter.StoreFS({
 }));
 
 //注册过滤器路由
-app.use(securityFilter.filter());
+app.use(securityFilter.filter(app));
 
 app.get("/hello", function (req, res, next) {
     res.send("hello world! - hello");

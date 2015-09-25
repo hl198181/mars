@@ -3,7 +3,7 @@
     {
       "path": "/home*",
       "needLogin": false,
-      "strategy": "default"
+      "strategy": []
     },
     {
       "path": "/admin*",
