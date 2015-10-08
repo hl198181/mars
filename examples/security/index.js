@@ -17,10 +17,20 @@ var securityFilter = mars.SecurityFilter;
 var path = require("path");
 var pause = require('pause');
 
+var routers = require("./routes/index");
+
 var app = express();
 
+//设置视图引擎
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
+
 app.use(cookieParser());
-app.use(session({secret: "345435345"}));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+app.use(session({resave: false, saveUninitialized: false, secret: "345435345"}));
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -34,7 +44,8 @@ passport.use("local", new LocalStrategy({
         var user = {
             id: "1",
             username: "admin",
-            password: "pass"
+            password: "pass",
+            role: ["user"]
         }
 
         if (username !== user.username) {
@@ -65,36 +76,32 @@ app.post("/auth", passport.authenticate('local', {
 }));
 
 //注册过滤器处理器策略
-securityFilter.use(new mars.SecurityFilter.LocalHandler({
-    "validLogin": function (req, done) {
-        debug("检查登录");
-        done(true);
-    },
-    "validRole": function (req, done) {
+//{failureRedirect: "/login"}
+securityFilter.use(new mars.SecurityFilter.LocalLoginHandler());
+securityFilter.use(new mars.SecurityFilter.LocalRoleHandler());
 
-    }
-}));
-
+//注册其他自定义安全过滤器,过滤器是顺序执行的
 securityFilter.use(new mars.SecurityFilter.DemoHandler());
 
 //注册过滤器配置策略
 securityFilter.store(new mars.SecurityFilter.StoreFS({
-    "path": path.join(__dirname, "./filter.json")
+    "path": path.join(__dirname, "./conf/filter.json")
 }));
 securityFilter.store(new mars.SecurityFilter.StoreFS({
-    "path": path.join(__dirname, "./filter1.json")
+    "path": path.join(__dirname, "./conf/filter1.json")
 }));
 
 //注册过滤器路由
 app.use(securityFilter.filter(app));
 
+
+//载入路由
+app.use("/", routers);
+
 app.get("/hello", function (req, res, next) {
     res.send("hello world! - hello");
 });
 
-app.get("/login", function (req, res, next) {
-    res.send("hello world!-login");
-});
 
 app.use(function (err, req, res, next) {
     res.send(err.stack);

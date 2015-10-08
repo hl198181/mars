@@ -1,0 +1,20 @@
+//
+   Created by Leon on 15/10/8.
+extends layout
+
+block content
+    h1 你好！欢迎使用！请登录系统！
+
+    form(method="post",action="/auth")
+        div.form-group
+            label(for="userno") 用户编号
+            input.form-control(type="text",id="userno",name="userno",placeholder="请输入用户编号")
+
+        div.form-group
+            label(for="password") 用户密码
+            input.form-control(type="password",id="password",name="password",placeholder="请输入登录密码")
+
+        button.btn.btn-default.btn-primary(type="submit") 登录
+        span &nbsp
+        button.btn.btn-default(type="button") 忘记密码
+
