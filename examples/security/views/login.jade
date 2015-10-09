@@ -11,7 +11,8 @@ block content
                 span(aria-hidden="true") &#215;
             strong 错误!
             p #{error_message}
-    form(method="post",action="/auth")                              div.form-group
+    form(method="post",action="/auth")
+        div.form-group
             label(for="userno") 用户编号
             input.form-control(type="text",id="userno",name="userno",placeholder="请输入用户编号")
 
