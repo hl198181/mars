@@ -10,7 +10,7 @@ var express = require("express");
 var router = express.Router();
 
 router.get("/login", function (req, res, next) {
-    res.render("login", {"title": "登录系统"});
+    res.render("login", {"title": "登录系统","error_message":req.flash('error')});
 });
 
 module.exports = router;

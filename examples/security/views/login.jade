@@ -5,8 +5,13 @@ extends layout
 block content
     h1 你好！欢迎使用！请登录系统！
 
-    form(method="post",action="/auth")
-        div.form-group
+    if error_message && error_message != ''
+        .alert.alert-danger.alert-dismissible(role="alert",)
+            button.close(type="button", data-dismiss="alert", aria-label="Close")
+                span(aria-hidden="true") &#215;
+            strong 错误!
+            p #{error_message}
+    form(method="post",action="/auth")                              div.form-group
             label(for="userno") 用户编号
             input.form-control(type="text",id="userno",name="userno",placeholder="请输入用户编号")
 

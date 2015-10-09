@@ -9,6 +9,7 @@
 var express = require("express");
 var passport = require("passport");
 var session = require('express-session');
+var flash = require('express-flash');
 var bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
 var LocalStrategy = require("passport-local").Strategy;
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 
 //配置本地登录验证策略
@@ -72,7 +74,8 @@ passport.deserializeUser(function (user, done) {
 //配置路由
 app.post("/auth", passport.authenticate('local', {
     successRedirect: "/hello",
-    failureRedirect: "/login"
+    failureRedirect: "/login",
+    failureFlash:true
 }));
 
 //注册过滤器处理器策略
