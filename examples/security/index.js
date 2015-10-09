@@ -76,7 +76,6 @@ app.post("/auth", passport.authenticate('local', {
 }));
 
 //注册过滤器处理器策略
-//{failureRedirect: "/login"}
 securityFilter.use(new mars.SecurityFilter.LocalLoginHandler());
 securityFilter.use(new mars.SecurityFilter.LocalRoleHandler());
 
