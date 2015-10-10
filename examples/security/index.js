@@ -87,7 +87,7 @@ securityFilter.use(new mars.SecurityFilter.LocalLoginHandler({
             } else {
                 done(false);
             }
-        },2000);
+        },1000);
     }
 }));
 securityFilter.use(new mars.SecurityFilter.LocalRoleHandler());
