@@ -106,7 +106,6 @@ securityFilter.store(new mars.SecurityFilter.StoreFS({
 //注册过滤器路由
 app.use(securityFilter.filter(app));
 
-
 //载入路由
 app.use("/", routers);
 
