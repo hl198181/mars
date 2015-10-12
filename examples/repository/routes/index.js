@@ -15,9 +15,9 @@ var router = express.Router();
 router.get("/reg", function (req, res, next) {
     debug("访问注册模块examples.!");
     model.reg("demo", {});
-    var size = model.size();
+    res.send("模块数量:" + model.size());
 
-    res.send("模块数量:" + size);
+
 });
 
 module.exports = router;
