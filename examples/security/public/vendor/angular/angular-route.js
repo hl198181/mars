@@ -99,7 +99,7 @@ function $RouteProvider() {
    *        `$location.path()` by applying the current route
    *
    *    - `resolve` - `{Object.<string, function>=}` - An optional map of dependencies which should
-   *      be injected into the controller. If any of these dependencies are promises, the router
+   *      be injected into the controller. If any of these dependencies are promises, the routes
    *      will wait for them all to be resolved or one to be rejected before the controller is
    *      instantiated.
    *      If all the promises are resolved successfully, the values of the resolved promises are
@@ -518,7 +518,7 @@ function $RouteProvider() {
      * Check if the route matches the current url.
      *
      * Inspired by match in
-     * visionmedia/express/lib/router/router.js.
+     * visionmedia/express/lib/routes/routes.js.
      */
     function switchRouteMatcher(on, route) {
       var keys = route.keys,
