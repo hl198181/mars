@@ -6,14 +6,13 @@
 
 'use strict';
 
-var repository = require("../lib/repository");
-var assert = require("assert");
-
 describe("repository()", function () {
 
+    var repository = require("../lib/repository");
+
     it("测试导出构造方法", function () {
-        assert.equal(typeof repository.Repository(), "function");
-        assert.equal(typeof repository.Model(), "function");
+        expect(typeof repository.Repository).toEqual('function');
+        expect(repository.Repository()).toEqual('success');
     });
 
 });
