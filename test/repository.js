@@ -18,7 +18,31 @@ describe("repository()", function () {
 
     it("repository.Model.reg()", function () {
         var module = repository.Model().reg("demo", {
-            fields: []
+            fields: [
+                {name: "id", type: "int"},
+                {name: "orderno", type: "string"},
+                {name: "price", type: "double"},
+                {name: "type", type: "string", convert: "type"},
+                {name: "createdate", type: "date", convert: "t2d"}
+            ],
+            proxy: {
+                type: "y9",
+                action: "com.yun9.ws.biz.service.AddOrUpdateProductGroupService",
+                params: {
+                    user: "leon"
+                }
+            },
+            converts: [{
+                name: "type", rule: function (val) {
+                    if (val === "A") {
+                        return "A类";
+                    } else if (val === "B") {
+                        return "B类";
+                    } else {
+                        return "C类";
+                    }
+                }
+            }]
         }).reg({
             name: "demo1",
             fields: []
@@ -42,7 +66,7 @@ describe("repository()", function () {
         });
         expect(module.all().length).toEqual(1);
     })
-    
+
     it("repository.use()", function () {
 
         var module = repository.Model().reg("demo", {
