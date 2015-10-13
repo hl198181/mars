@@ -56,7 +56,7 @@ describe("repository()", function () {
             fields: []
         });
 
-        expect(model.size()).toEqual(2);
+        expect(model.get("demo")).toBeDefined();
     });
 
     /**
@@ -71,7 +71,7 @@ describe("repository()", function () {
      * 测试获取所有的模型配置
      */
     it("repository.Model.all()", function () {
-        expect(model.all().length).toEqual(2);
+        expect(model.all()).toBeDefined();
     })
 
     /**
@@ -85,7 +85,7 @@ describe("repository()", function () {
             fields: []
         });
         repos.use(model).use(model1);
-        expect(repos.size()).toEqual(4);
+        expect(repos.get("test")).toBeDefined();
     });
 
     /**
