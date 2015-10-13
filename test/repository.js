@@ -6,23 +6,31 @@
 
 'use strict';
 var repository = require("../lib/repository");
+var model = repository.Model();
 var repos = repository.Repository();
+
 
 describe("repository()", function () {
 
+    /***
+     * 测试构造方法
+     */
     it("repository()", function () {
         expect(typeof repository, "'function'");
         expect(typeof repository.Repository(), "'function'");
         expect(typeof repository.Model(), "'function'");
     });
 
+    /**
+     * 测试模型注册,后续测试依赖此处注册的模型数据
+     */
     it("repository.Model.reg()", function () {
-        var module = repository.Model().reg("demo", {
+        model.reg("demo", {
             fields: [
                 {name: "id", type: "int"},
                 {name: "orderno", type: "string"},
                 {name: "price", type: "double"},
-                {name: "type", type: "string", convert: "type"},
+                {name: "type", type: "string", convert: "type", label: "type"},
                 {name: "createdate", type: "date", convert: "t2d"}
             ],
             proxy: {
@@ -48,43 +56,44 @@ describe("repository()", function () {
             fields: []
         });
 
-        expect(module.size()).toEqual(2);
+        expect(model.size()).toEqual(2);
     });
 
+    /**
+     * 测试根据名称获取模型配置
+     */
     it("repository.Model.get()", function () {
-        var module = repository.Model().reg("demo", {
-            fields: []
-        });
-
-        var moduleConfig = module.get("demo");
+        var moduleConfig = model.get("demo");
         expect(moduleConfig).toBeDefined();
     })
 
+    /**
+     * 测试获取所有的模型配置
+     */
     it("repository.Model.all()", function () {
-        var module = repository.Model().reg("demo", {
-            fields: []
-        });
-        expect(module.all().length).toEqual(1);
+        expect(model.all().length).toEqual(2);
     })
 
+    /**
+     * 测试资源仓库使用模型配置
+     */
     it("repository.use()", function () {
-
-        var module = repository.Model().reg("demo", {
-            fields: []
-        }).reg({
-            name: "demo1",
-            fields: []
-        });
-
-        var module1 = repository.Model().reg("test", {
+        var model1 = repository.Model().reg("test", {
             fields: []
         }).reg({
             name: "test1",
             fields: []
         });
-
-        repos.use(module).use(module1);
-
+        repos.use(model).use(model1);
         expect(repos.size()).toEqual(4);
+    });
+
+    /**
+     * 测试资源仓库根据名称获取模型配置
+     */
+    it("repository.get()", function () {
+        var modelConfig = repos.get("demo");
+        expect(modelConfig).toBeDefined();
+
     });
 });
