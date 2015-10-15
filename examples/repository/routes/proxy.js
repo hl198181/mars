@@ -23,7 +23,7 @@ router.get("/send", function (req, res, next) {
         action: "com.yun9.ws.biz.service.QueryProductInfoByIdService"
     }).params({
         "productid": "10000001447014"
-    }).launch(function (err, result) {
+    }).launch(function (result) {
         debug("执行成功！");
         res.send(result.body);
     }, function (err, result) {
