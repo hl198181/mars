@@ -28,7 +28,7 @@ describe("repository()", function () {
                 {name: "id", type: "string",required:true},
                 {name: "orderno", type: "string",required:true, convert: "orderno"},
                 {name: "price", type: "number"},
-                {name: "type", type: "string", convert: "type", label: "type"},
+                {name: "type", type: "string", label: "type"},
                 {name: "createdate", type: "string", convert: "t2d"}
             ],
             proxy: {
@@ -44,6 +44,11 @@ describe("repository()", function () {
                 return 'B订单';
             }
             return '默认订单';
+        }).convert('type',function(val) {
+            if (val == 'A') {
+                return 'A类';
+            }
+            return '其他类型';
         });
         modelFactory.reg(m);
         modelFactory.reg({
@@ -90,7 +95,7 @@ describe("repository()", function () {
         });
         var demo3 = modelFactory.get('demo3');
         var demo = modelFactory.get('demo');
-        expect(demo.converts['type']).toBeUndefined();
+        expect(demo.converts['type']).toBeDefined();
         expect(typeof demo3.converts['type']).toBe('function');
     });
 
@@ -151,6 +156,8 @@ describe("repository()", function () {
         var demo = repository.get("demo");
         demo.findOne({},function(err,res) {
             expect(err).toBeNull();
+            expect(res.type).toBe('A');
+            expect(res.getLabel('type')).toBe('A类');
             expect(res.orderno).toEqual('默认订单');
             done();
         });
