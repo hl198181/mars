@@ -43,7 +43,9 @@ describe("Service", function () {
      * 获取代理策略处理器
      */
     it("service.Proxy()()", function () {
-        var handler = proxy("Y9");
+        var handler = proxy("Y9", {
+            action: "com.yun9.ws.biz.service.QueryProductInfoByIdService"
+        });
 
         expect(handler).toBeDefined();
     });
@@ -52,7 +54,9 @@ describe("Service", function () {
      * 代理策略处理器添加参数
      */
     it("service.Proxy()().params()", function () {
-        var handler = proxy("Y9").params({
+        var handler = proxy("Y9", {
+            action: "com.yun9.ws.biz.service.QueryProductInfoByIdService"
+        }).params({
             demo1: "1",
             demo2: [1, 2, 3]
         });
@@ -61,21 +65,23 @@ describe("Service", function () {
     });
 
     /**
-     * 代理策略处理器执行
+     * 代理策略处理器执行,由于单元测试是在浏览器进行，无法进行跨域操作。无法进行测试
      */
 
-    it("service.Proxy()().launch()", function () {
-        proxy("Y9").params({
-            "hello": "leon"
-        }).launch(function (handler) {
-            //成功
-            expect(1).toEqual(1);
-        }, function (error) {
-            //失败
-            expect(1).toEqual(1);
-        }, function () {
-            //总是执行
-            expect(1).toEqual(1);
-        });
-    });
+    //it("service.Proxy()().launch()", function () {
+    //    proxy("Y9", {
+    //        action: "com.yun9.ws.biz.service.QueryProductInfoByIdService"
+    //    }).params({
+    //        "productid": "10000001447014"
+    //    }).launch(function (handler) {
+    //        //成功
+    //        expect(1).toEqual(1);
+    //    }, function (error) {
+    //        //失败
+    //        expect(1).toEqual(1);
+    //    }, function () {
+    //        //总是执行
+    //        expect(1).toEqual(1);
+    //    });
+    //});
 });

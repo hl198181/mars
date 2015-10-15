@@ -9,7 +9,6 @@
 var express = require("express");
 var debug = require("debug")("mars-repository-examples");
 var repository = require("../../../lib/repository");
-var model = repository.Model();
 var router = express.Router();
 
 router.get("/reg", function (req, res, next) {
