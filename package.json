@@ -45,7 +45,8 @@
     "passport-facebook": "^2.0.0",
     "passport-local": "^1.0.0",
     "pause": "^0.1.0",
-    "q": "^1.4.1"
+    "q": "^1.4.1",
+    "superagent": "^1.4.0"
   },
   "devDependencies": {
     "karma": "^0.13.10",
