@@ -1,0 +1,5 @@
+examples
+karma.conf.js
+node_modules
+*.log
+test
