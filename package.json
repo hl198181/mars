@@ -1,5 +1,5 @@
 {
-  "name": "mars",
+  "name": "y9-mars",
   "version": "1.0.0",
   "description": "基于Express的一些列常用快速搭建web应用的中间件，主要包括安全、导航、服务代理等等。",
   "main": "index.js",
