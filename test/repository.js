@@ -28,7 +28,7 @@ describe("repository()", function () {
                 {name: "id", type: "string",required:true},
                 {name: "orderno", type: "string",required:true, convert: "orderno"},
                 {name: "price", type: "number"},
-                {name: "type", type: "string", label: "type"},
+                {name: "type", type: "string", label: "类型",convert:"type"},
                 {name: "createdate", type: "string", convert: "t2d"}
             ],
             proxy: {
@@ -39,16 +39,21 @@ describe("repository()", function () {
                 }
             }
         });
-        m.convert('orderno',function(val) {
-            if (val == 'B') {
-                return 'B订单';
+        m.convert('orderno',function(value,dataObj,done) {
+            setTimeout(function(){
+                if (value === "A") {
+                    done("A订单");
+                } else if (value === "B") {
+                    done("B订单");
+                } else {
+                    done("C订单");
+                }
+            },500);
+        }).convert('type',function(value,dataObj,done) {
+            if (value === 'A') {
+                return done('A类');
             }
-            return '默认订单';
-        }).convert('type',function(val) {
-            if (val == 'A') {
-                return 'A类';
-            }
-            return '其他类型';
+            done('其他类型');
         });
         modelFactory.reg(m);
         modelFactory.reg({
@@ -63,16 +68,16 @@ describe("repository()", function () {
     /**
      * 测试ModelFactory注册转换器
      */
-    it('ModelFactory.convert().convertAsync()',function() {
-        modelFactory.convert('type',function(value) {
+    it('ModelFactory.convert()',function() {
+        modelFactory.convert('type',function(value,dataObj,done) {
             if (value === "A") {
-                return "A类";
+                done("A类");
             } else if (value === "B") {
-                return "B类";
+                done("B类");
             } else {
-                return "C类";
+                done("C类");
             }
-        }).convertAsync('orderno',function(value,data,done) {
+        }).convert('orderno',function(value,dataObj,done) {
             setTimeout(function(){
                 if (value === "A") {
                     done("A订单");
@@ -81,7 +86,7 @@ describe("repository()", function () {
                 } else {
                     done("C订单");
                 }
-            },500);
+            },100);
         });
     });
 
@@ -142,11 +147,14 @@ describe("repository()", function () {
     /**
      * 测试创建资源
      */
-    it('Model()',function() {
+    it('Model()',function(done) {
         var demo = repository.get("demo");
-        var resource = demo({id:'123',orderno:'B'});
-        expect(resource).toBeDefined();
-        expect(resource.orderno).toEqual('B订单');
+        demo({id:'123',orderno:'B'},function(err,resource) {
+            expect(err).toBeNull();
+            expect(resource).toBeDefined();
+            expect(resource.get('orderno')).toEqual('B订单');
+            done();
+        });
     });
 
     /**
@@ -156,9 +164,9 @@ describe("repository()", function () {
         var demo = repository.get("demo");
         demo.findOne({},function(err,res) {
             expect(err).toBeNull();
-            expect(res.type).toBe('A');
-            expect(res.getLabel('type')).toBe('A类');
-            expect(res.orderno).toEqual('默认订单');
+            expect(res.get('type')).toBe('A类');
+            expect(res.getMeta('type')).toBe('A');
+            expect(res.get('orderno')).toEqual('A订单');
             done();
         });
     });
