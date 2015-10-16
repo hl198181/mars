@@ -29,7 +29,8 @@ describe("repository()", function () {
                 {name: "orderno", type: "string",required:true, convert: "orderno"},
                 {name: "price", type: "number"},
                 {name: "type", type: "string", label: "类型",convert:"type"},
-                {name: "createdate", type: "string", convert: "t2d"}
+                {name: "createdate", type: "string", convert: "t2d"},
+                {name: "demo1", type: "object",ref:"demo1"}
             ],
             proxy: {
                 type: "y9",
@@ -58,7 +59,7 @@ describe("repository()", function () {
         modelFactory.reg(m);
         modelFactory.reg({
             name: "demo1",
-            fields: []
+            fields: [{name: "id", type: "string",required:true}]
         });
 
         expect(modelFactory.get("demo")).toBeDefined();
@@ -149,11 +150,19 @@ describe("repository()", function () {
      */
     it('Model()',function(done) {
         var demo = repository.get("demo");
-        demo({id:'123',orderno:'B'},function(err,resource) {
-            expect(err).toBeNull();
-            expect(resource).toBeDefined();
-            expect(resource.get('orderno')).toEqual('B订单');
-            done();
+        demo({data:{id:'123',orderno:'B',
+            demo1:{id:"123",dddd:"不应该存在的字段"},
+            lala:'不应该存在的字段'}},
+            function(err,resource) {
+                expect(err).toBeNull();
+                expect(resource).toBeDefined();
+                expect(resource.get('orderno')).toEqual('B订单');
+                expect(resource.get('lala')).toBeUndefined();
+                expect(resource.get("demo1")).toBeDefined();
+                expect(resource.get("demo1").id).toEqual('123');
+                expect(resource.get("demo1.id")).toEqual('123');
+                expect(resource.get("demo1").dddd).toBeUndefined();
+                done();
         });
     });
 
