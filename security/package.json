@@ -1,0 +1,31 @@
+{
+  "name": "y9-mars-security",
+  "version": "1.0.0",
+  "description": "基于express的安全过滤组件。通过注册的过滤器，检查访问当前路径的用户是否具备访问权限。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hl198181/mars.git"
+  },
+  "keywords": [
+    "web",
+    "filter",
+    "mars",
+    "security"
+  ],
+  "author": "Leon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hl198181/mars/issues"
+  },
+  "homepage": "https://github.com/hl198181/mars#readme",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "express": "^4.13.3",
+    "q": "^1.4.1",
+    "y9-mars-util": "^1.0.1"
+  }
+}

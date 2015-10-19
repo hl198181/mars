@@ -1,0 +1,24 @@
+{
+  "name": "y9-mars-repository",
+  "version": "1.0.0",
+  "description": "资源模型管理器，通过配置模型、代理数据来源。构建一个自动映射来自服务资源的模型数据对象，实现模型与资源之间的无缝数据交换",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hl198181/mars.git"
+  },
+  "keywords": [
+    "web",
+    "model",
+    "proxy"
+  ],
+  "author": "Leon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hl198181/mars/issues"
+  },
+  "homepage": "https://github.com/hl198181/mars#readme"
+}

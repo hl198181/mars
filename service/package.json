@@ -1,0 +1,27 @@
+{
+  "name": "y9-mars-service",
+  "version": "1.0.0",
+  "description": "包括服务代理调用、服务发布等相关功能。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hl198181/mars.git"
+  },
+  "keywords": [
+    "web",
+    "service",
+    "proxy"
+  ],
+  "author": "Leon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hl198181/mars/issues"
+  },
+  "homepage": "https://github.com/hl198181/mars#readme",
+  "dependencies": {
+    "debug": "^2.2.0"
+  }
+}
