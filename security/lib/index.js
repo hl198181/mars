@@ -8,4 +8,4 @@
 
 var filter = require("./filter");
 
-exports = module.exports.Filter = filter;
+module.exports.Filter = filter;

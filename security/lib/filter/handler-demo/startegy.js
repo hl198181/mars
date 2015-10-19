@@ -11,17 +11,17 @@ var HandlerStrategy = require("../handler-strategy");
 var debug = require("debug")("mars-security-handler-demo");
 
 
-module.exports = function () {
-    return new HandlerDemo();
+module.exports = function HandlerDemo(options) {
+    return new Handler(options);
 };
 
-function HandlerDemo() {
-
+function Handler(options) {
+    this._options = options || {};
 }
 
-util.inherits(HandlerDemo, HandlerStrategy);
+util.inherits(Handler, HandlerStrategy);
 
-HandlerDemo.prototype.filter = function filter() {
+Handler.prototype.filter = function filter() {
     debug("Demo处理器策略");
 
     this.success();

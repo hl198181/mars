@@ -4,7 +4,7 @@
 
 var filter = require("./filter");
 
-exports = module.exports.Filter = filter;
+exports = module.exports = filter;
 
 
 var StoreFS = require("./store-fs");
