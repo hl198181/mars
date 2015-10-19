@@ -12,7 +12,9 @@ var util = require("util");
 var y9util = require("y9-mars-util");
 var HandlerStrategy = require("../handler-strategy");
 
-exports = module.exports = LocalRoleHandler;
+exports = module.exports = function (options) {
+    return new LocalRoleHandler(options);
+};
 
 
 function LocalRoleHandler(options) {

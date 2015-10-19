@@ -11,7 +11,10 @@ var Q = require("q");
 var util = require("util");
 var HandlerStrategy = require("../handler-strategy");
 
-exports = module.exports = LocalLoginStrategy;
+exports = module.exports = function (options) {
+
+    return new LocalLoginStrategy(options);
+};
 
 
 function LocalLoginStrategy(options) {

@@ -70,9 +70,9 @@ module.exports = function (config) {
         plugins: [
             'karma-chrome-launcher',
             'karma-jasmine',
-            'karma-requirejs',
+            //'karma-requirejs',
             'karma-browserify',
-            'karma-html-all-reporter'
+            //'karma-html-all-reporter'
         ]
     })
 }

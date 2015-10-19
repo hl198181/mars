@@ -22,14 +22,10 @@
   },
   "homepage": "https://github.com/hl198181/mars#readme",
   "devDependencies": {
-    "browserify": "^11.2.0",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.10",
     "karma-browserify": "^4.4.0",
     "karma-chrome-launcher": "^0.2.1",
-    "karma-html-all-reporter": "~0.1.0",
-    "karma-jasmine": "^0.3.6",
-    "karma-requirejs": "^0.2.2",
-    "requirejs": "^2.1.20"
+    "karma-jasmine": "^0.3.6"
   }
 }

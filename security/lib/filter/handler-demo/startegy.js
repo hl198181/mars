@@ -11,7 +11,9 @@ var HandlerStrategy = require("../handler-strategy");
 var debug = require("debug")("mars-security-handler-demo");
 
 
-module.exports = HandlerDemo;
+module.exports = function () {
+    return new HandlerDemo();
+};
 
 function HandlerDemo() {
 

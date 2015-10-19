@@ -63,16 +63,14 @@ module.exports = function (config) {
         // if true, Karma captures browsers, runs the tests and exits
         singleRun: false,
 
-        browserify:{
-            debug:true
+        browserify: {
+            debug: true
         },
 
         plugins: [
             'karma-chrome-launcher',
             'karma-jasmine',
-            'karma-requirejs',
-            'karma-browserify',
-            'karma-html-all-reporter'
+            'karma-browserify'
         ]
     })
 }

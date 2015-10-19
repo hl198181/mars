@@ -20,5 +20,12 @@
   "bugs": {
     "url": "https://github.com/hl198181/mars/issues"
   },
-  "homepage": "https://github.com/hl198181/mars#readme"
+  "homepage": "https://github.com/hl198181/mars#readme",
+  "devDependencies": {
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.13.10",
+    "karma-browserify": "^4.4.0",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-jasmine": "^0.3.6"
+  }
 }
