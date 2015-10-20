@@ -10,6 +10,7 @@ var resource = require('../resource');
 var repository = require("../");
 var util = require('util');
 var marsUtil = require('y9-mars-util');
+var service = require('y9-mars-service');
 var Q = require("q");
 
 var proto = module.exports = function (options) {
@@ -58,7 +59,10 @@ proto.verify = function(data) {
         throw new Error(this.modelName +'无效的原始数据对象');
     }
     if (util.isArray(data)) {
-        return data.forEach(this.verify);
+        var self = this;
+        return data.forEach(function(dd) {
+            self.verify(dd);
+        });
     }
     var self = this;
     var hasOwnProperty = Object.prototype.hasOwnProperty
@@ -139,11 +143,31 @@ proto.convert = function (name,callback) {
  * @param params 查询条件
  * @param callback 回调函数
  */
-proto.findOne = function(params,callback) {
+proto.find = function(params,callback) {
+    if (!this._options.proxy) {
+        throw new Err('Model:'+this._modelName+",未配置proxy");
+    }
+    var proxyConfig = this._options.proxy;
     var self = this;
-    setTimeout(function(){
-        self.toResource({data:{id:'1',orderno:'A',type:'A'}},callback);
-    },200);
+    var proxy = service.Proxy;
+    var oneParams = {};
+    if (proxyConfig.params) {
+        marsUtil.Merge(oneParams,proxyConfig.params);
+    }
+    if (params) {
+        marsUtil.Merge(oneParams,params);
+    }
+    proxy(proxyConfig.type,{
+        action:proxyConfig.action
+    }).params(oneParams).launch(function(result){
+        self.toResource(result.body,callback);
+    },function(err,result){
+        resource(self,undefined,function(e,res) {
+            callback(err,res);
+        });
+    },function() {
+        // do nothing
+    });
 }
 
 /**

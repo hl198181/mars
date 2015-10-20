@@ -7,7 +7,7 @@
 'use strict';
 
 module.exports.createMethodArray = function (method, len) {
-    if (!method || !len || typeof method != 'function') {
+    if (!method || (typeof len != 'number' || len < 0) || typeof method != 'function') {
         throw new Error('无效的入参');
     }
     var fns = [];

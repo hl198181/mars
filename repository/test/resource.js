@@ -25,7 +25,7 @@ describe('Resource', function () {
                 {name: "laterate", type: "number"}
             ],
             proxy: {
-                type: "y9",
+                type: "Y9",
                 action: "com.yun9.ws.biz.service.QueryWorkorderAnalysisUserService",
                 params: {
                     instid: "10000001468002"
@@ -36,7 +36,7 @@ describe('Resource', function () {
         modelFactory.reg(model);
         repository.use(modelFactory);
         // 注册proxy
-        var service = require("../../service/lib");
+        var service = require("y9-mars-service");
         var proxy = service.Proxy();
         proxy.use(service.ProxyY9({
             token: "8fc50dd14a951318ca168e40a9fa1ec78d1110e058700c9affdbe6ab5eb6b931",
@@ -72,11 +72,25 @@ describe('Resource', function () {
     });
 
     it('verify proxy',function() {
-        var service = require("../../service/lib");
+        var service = require("y9-mars-service");
         var proxy = service.Proxy();
         var strategy = proxy._strategy('Y9');
         should(strategy).ok;
         should(strategy).have.property('_token',
             '8fc50dd14a951318ca168e40a9fa1ec78d1110e058700c9affdbe6ab5eb6b931');
+    });
+
+    it('resource find',function(done) {
+        var model = repository.get('WorkorderAnalysisUser');
+        model.find(
+            {beginDate:'1420041600000',
+                endDate:'1451577600000'},
+            function(err,resource) {
+            should(err).not.ok;
+            should(resource).ok;
+            should(resource.getBean(0)).ok;
+            should(resource.get('allNums')).not.empty;
+            done();
+        });
     });
 });
