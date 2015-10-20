@@ -6,7 +6,7 @@
 
 'use strict';
 
-var service = require("../lib");
+var service = require("../");
 var should = require("should");
 var proxy = service.Proxy();
 

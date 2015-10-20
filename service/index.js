@@ -2,4 +2,6 @@
  * Created by leon on 15/10/19.
  */
 
-var security = require("./lib");
+var service = require("./lib");
+
+module.exports = service;

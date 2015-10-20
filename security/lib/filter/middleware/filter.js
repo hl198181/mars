@@ -19,6 +19,7 @@ module.exports = function filter(app, filter, options) {
     reg(app, filter, options);
 
     return function (req, res, next) {
+        debug("安全过滤器中间件.");
         next();
     }
 }
@@ -124,7 +125,10 @@ function doHandler(filter, item) {
         }
         attempts.reduce(function (prev, current) {
             return prev.then(current);
-        }, Q());
+        }, Q()).then(function () {
+            next();
+        }, function () {
+        });
 
     }
 }
@@ -149,27 +153,31 @@ function reg(app, filter, options) {
     });
 
     //加载注册安全过滤器
-    filter._stores.forEach(function (item, index) {
+
+    for (var i = 0; i < filter._stores.length; i++) {
+        var item = filter._stores[i];
         if (item) {
             var filterConfigs = item();
 
-            filterConfigs.all.forEach(function (filterItem, i) {
+            for (var j = 0; j < filterConfigs.all.length; j++) {
+                var filterItem = filterConfigs.all[j];
                 debug("开始注册all安全过滤路径:" + filterItem.path);
                 router.all(filterItem.path, doHandler(filter, filterItem));
-            });
+            }
 
-            filterConfigs.get.forEach(function (filterItem, i) {
+            for (var j = 0; j < filterConfigs.get.length; j++) {
+                var filterItem = filterConfigs.get[j];
                 debug("开始注册get安全过滤路径:" + filterItem.path);
                 router.get(filterItem.path, doHandler(filter, filterItem));
-            });
+            }
 
-            filterConfigs.post.forEach(function (filterItem, i) {
+            for (var j = 0; j < filterConfigs.post.length; j++) {
+                var filterItem = filterConfigs.post[j];
                 debug("开始注册post安全过滤路径:" + filterItem.path);
                 router.post(filterItem.path, doHandler(filter, filterItem));
-            });
+            }
         }
-    });
-
+    }
     //添加到app
     app.use(root, router);
     registeredRoutes = true;
