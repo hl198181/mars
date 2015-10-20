@@ -146,38 +146,4 @@ describe("repository()", function () {
         should(model.modelName).eql('demo');
     });
 
-    /**
-     * 测试创建资源
-     */
-    it('Model()',function(done) {
-        var demo = repository.get("demo");
-        demo({data:{id:'123',orderno:'B',
-            demo1:{id:"123",dddd:"不应该存在的字段"},
-            lala:'不应该存在的字段'}},
-            function(err,resource) {
-                should(err).eql(null);
-                should(resource).ok;
-                should(resource.get('orderno')).eql('B订单');
-                should(resource.get('lala')).not.ok;
-                should(resource.get("demo1")).ok;
-                should(resource.get("demo1").id).eql('123');
-                should(resource.get("demo1.id")).eql('123');
-                should(resource.get("demo1").dddd).not.ok;
-                done();
-        });
-    });
-
-    /**
-     * 测试通过Model.findOne查找Resource
-     */
-    it('Model.findOne()',function(done) {
-        var demo = repository.get("demo");
-        demo.findOne({},function(err,res) {
-            should(err).eql(null);
-            should(res.get('type')).eql('A类');
-            should(res.getMeta('type')).eql('A');
-            should(res.get('orderno')).eql('A订单');
-            done();
-        });
-    });
 });
