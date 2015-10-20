@@ -6,8 +6,8 @@
 
 'use strict';
 
-var mars_util = require('../../util/util');
-var mixin = require('../../util/merge');
+
+var marsUtil = require('y9-mars-util');
 var repository = require("../");
 var Q = require("q");
 
@@ -113,7 +113,7 @@ proto._convertData = function (data, meta, fields, convertCallbackFn) {
                     });
                     return childDefered.promise;
                 }
-                var fns = mars_util.createMethodArray(convertChildData,childMetas.length);
+                var fns = marsUtil.Util.createMethodArray(convertChildData,childMetas.length);
                 fns.reduce(function(prev,current) {
                     return prev.then(current);
                 },Q()).then(function() {
@@ -128,12 +128,12 @@ proto._convertData = function (data, meta, fields, convertCallbackFn) {
         return defered.promise;
     }
     var done = convertCallbackFn || function (err, dd) {
-            mixin(self, dd);
+            marsUtil.Merge(self, dd);
             self._dataReadyFn(err, self);
             delete self._model;
             delete self._dataReadyFn;
         }
-    var fns = mars_util.createMethodArray(convertField, fields.length);
+    var fns = marsUtil.Util.createMethodArray(convertField, fields.length);
     fns.push(function () {
         done(null, data);
     });

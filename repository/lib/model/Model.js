@@ -9,7 +9,7 @@
 var resource = require('../resource');
 var repository = require("../");
 var util = require('util');
-var mars_util = require('../../util/util');
+var marsUtil = require('y9-mars-util');
 var Q = require("q");
 
 var proto = module.exports = function (options) {
@@ -68,7 +68,9 @@ proto.verify = function(data) {
             && !hasOwnProperty.call(obj,field.name)) {
             throw new Error(self.modelName+"," +field.name+' 字段不能为空')
         }
-        if (hasOwnProperty.call(obj,field.name)) {
+        if (hasOwnProperty.call(obj,field.name)
+            && obj[field.name] != undefined
+            && obj[field.name] != null) {
             // 校验类型是否正确
             if (field.type == 'boolean'
             && !util.isBoolean(obj[field.name])){
@@ -182,7 +184,7 @@ proto.toResources = function(datas,dataReadyFn) {
         });
         return defered.promise;
     }
-    var fns = mars_util.createMethodArray(toModel,datas.length);
+    var fns = marsUtil.Util.createMethodArray(toModel,datas.length);
     fns.push(function() {
         dataReadyFn(null,ms);
     });
