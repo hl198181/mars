@@ -6,8 +6,8 @@
 
 'use strict';
 
-var mars_util = require('../../util/util');
-var mixin = require('../../util/merge');
+var mars_util = require('../../../util/lib/util');
+var mixin = require('../../../util/lib/merge');
 var repository = require("../");
 var Q = require("q");
 

@@ -7,7 +7,7 @@
 'use strict';
 var debug = require("debug")("mars-repository-model");
 var model = require('./Model');
-var mixin = require('../../util/merge');
+var mixin = require('../../../util/lib/merge');
 
 var proto = module.exports = function (options) {
 

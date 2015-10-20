@@ -9,7 +9,7 @@
 var resource = require('../resource');
 var repository = require("../");
 var util = require('util');
-var mars_util = require('../../util/util');
+var mars_util = require('../../../util/lib/util');
 var Q = require("q");
 
 var proto = module.exports = function (options) {

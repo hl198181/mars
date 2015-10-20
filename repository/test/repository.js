@@ -5,8 +5,8 @@
  */
 
 'use strict';
-var repository = require("../lib/repository");
-var modelFactory = require("../lib/repository/model")();
+var repository = require("../lib");
+var modelFactory = require("../lib/model")();
 
 
 describe("repository()", function () {
@@ -22,7 +22,7 @@ describe("repository()", function () {
      * 测试模型注册,后续测试依赖此处注册的模型数据
      */
     it("ModelFactory.reg()", function () {
-        var m = require("../lib/repository/model/Model")({
+        var m = require("../lib/model/Model")({
             name:'demo',
             fields: [
                 {name: "id", type: "string",required:true},
@@ -124,7 +124,7 @@ describe("repository()", function () {
      * 测试资源仓库使用模型配置
      */
     it("repository.use()", function () {
-        var modelFactory1 = require("../lib/repository/model")().reg("test", {
+        var modelFactory1 = require("../lib/model")().reg("test", {
             fields: []
         }).reg({
             name: "test1",
@@ -139,7 +139,7 @@ describe("repository()", function () {
      * 测试资源仓库根据名称获取模型配置
      */
     it("repository.get()", function () {
-        var repository2 = require("../lib/repository");
+        var repository2 = require("../lib");
         var model = repository2.get("demo");
         expect(model).toBeDefined();
         expect(model.modelName).toEqual('demo');
