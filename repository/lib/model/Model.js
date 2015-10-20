@@ -9,7 +9,7 @@
 var resource = require('../resource');
 var repository = require("../");
 var util = require('util');
-var mars_util = require('../../../util/lib/util');
+var marsUtil = require('y9-mars-util');
 var Q = require("q");
 
 var proto = module.exports = function (options) {
@@ -182,7 +182,7 @@ proto.toResources = function(datas,dataReadyFn) {
         });
         return defered.promise;
     }
-    var fns = mars_util.createMethodArray(toModel,datas.length);
+    var fns = marsUtil.Util.createMethodArray(toModel,datas.length);
     fns.push(function() {
         dataReadyFn(null,ms);
     });

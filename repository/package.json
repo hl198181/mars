@@ -21,6 +21,11 @@
     "url": "https://github.com/hl198181/mars/issues"
   },
   "homepage": "https://github.com/hl198181/mars#readme",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "q": "^1.4.1",
+    "y9-mars-util": "^1.0.1"
+  },
   "devDependencies": {
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.10",

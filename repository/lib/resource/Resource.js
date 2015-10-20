@@ -6,8 +6,7 @@
 
 'use strict';
 
-var mars_util = require('../../../util/lib/util');
-var mixin = require('../../../util/lib/merge');
+var marsUtil = require('y9-mars-util');
 var util = require('util');
 var Q = require("q");
 var repository = require("../");
@@ -43,12 +42,12 @@ proto.init = function(data) {
         fields.forEach(function(field) {
             if (field.ref) {
                 var model = repository.get(field.ref);
-                var headField = mixin({},field);
+                var headField = marsUtil.Merge({},field);
                 delete headField.ref;
                 headField.fields = buildHeader(model.getConfig()['fields']);
                 header.push(headField);
             } else {
-                header.push(mixin({},field));
+                header.push(marsUtil.Merge({},field));
             }
         });
         return header;
@@ -124,7 +123,7 @@ proto.buildRows = function (data) {
         });
         return defered.promise;
     }
-    var fns = mars_util.createMethodArray(buildBean,data.length);
+    var fns = marsUtil.Util.createMethodArray(buildBean,data.length);
     fns.reduce(function(prev,current) {
         return prev.then(current);
     },Q()).then(function() {
