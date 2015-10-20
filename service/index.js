@@ -3,3 +3,5 @@
  */
 
 var security = require("./lib");
+
+module.exports = security;
