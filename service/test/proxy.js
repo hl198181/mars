@@ -7,20 +7,21 @@
 'use strict';
 
 var service = require("../lib");
+var should = require("should");
 var proxy = service.Proxy();
 
 describe("Service", function () {
 
-    it("service()", function () {
-        expect(typeof service.Proxy, "function");
-    });
-
-    /**
-     * 测试创建代理对象实例
-     */
-    it("service.Proxy()", function () {
-        expect(typeof service.Proxy(), "function");
-    });
+    //it("service()", function () {
+    //    should(typeof service.Proxy).equal("function");
+    //});
+    //
+    ///**
+    // * 测试创建代理对象实例
+    // */
+    //it("service.Proxy()", function () {
+    //    should(typeof service.Proxy()).equal("function");
+    //});
 
     /**
      * 测试注册代理策略
@@ -36,7 +37,10 @@ describe("Service", function () {
             baseurl: "11"
         }));
 
-        expect(proxy._strategy("Y9")).toBeDefined();
+        var strategy = proxy._strategy("Y91");
+
+        should(strategy._token).equal("2");
+
     });
 
     /**
@@ -47,7 +51,7 @@ describe("Service", function () {
             action: "com.yun9.ws.biz.service.QueryProductInfoByIdService"
         });
 
-        expect(handler).toBeDefined();
+        handler.should.not.be.NaN;
     });
 
     /**
@@ -60,8 +64,7 @@ describe("Service", function () {
             demo1: "1",
             demo2: [1, 2, 3]
         });
-
-        expect(handler._params["demo2"].length).toEqual(3);
+        handler._params["demo2"].should.have.length(3);
     });
 
     /**

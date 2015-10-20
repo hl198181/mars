@@ -15,7 +15,7 @@ var proto = module.exports = function (options) {
     }
 
     proxy.__proto__ = proto;
-    proxy._strategies = [];
+    proxy._strategies = {};
 
     return proxy;
 }

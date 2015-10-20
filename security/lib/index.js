@@ -7,5 +7,15 @@
 'use strict';
 
 var filter = require("./filter");
+var filterStore = require("./filter-store");
+var localLoginHandler = require("./filter-handler-locallogin");
+var localRoleHandler = require("./filter-handler-localrole");
+var demoHandler = require("./filter-handler-demo");
 
-module.exports.Filter = filter;
+exports = module.exports;
+
+exports.Filter = filter;
+exports.FilterStore = filterStore;
+exports.LocalLoginHandler = localLoginHandler;
+exports.LocalRoleHandler = localRoleHandler;
+exports.DemoHandler = demoHandler;

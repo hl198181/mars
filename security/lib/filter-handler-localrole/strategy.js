@@ -10,7 +10,7 @@ var debug = require("debug")("mars-security-local-role");
 var Q = require("q");
 var util = require("util");
 var y9util = require("y9-mars-util");
-var HandlerStrategy = require("../handler-strategy");
+var HandlerStrategy = require("../filter-handler");
 
 exports = module.exports = function (options) {
     return new LocalRoleHandler(options);

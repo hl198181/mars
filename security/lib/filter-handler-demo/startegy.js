@@ -7,11 +7,11 @@
 'use strict';
 
 var util = require("util");
-var HandlerStrategy = require("../handler-strategy");
+var HandlerStrategy = require("../filter-handler");
 var debug = require("debug")("mars-security-handler-demo");
 
 
-module.exports = function HandlerDemo(options) {
+module.exports = function (options) {
     return new Handler(options);
 };
 

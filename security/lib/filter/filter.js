@@ -15,27 +15,26 @@ var debug = require("debug")("mars-security");
  * @param options
  *
  */
-var proto = module.exports = function () {
+var proto = module.exports = function (options) {
+
 
     debug("创建安全过滤器!");
 
-    var filter = function () {
-
+    /**
+     * 返回过滤器中间件
+     */
+    function filterHandler(app, options) {
+        return filterHandler._framework.filter(app, filterHandler, options);
     }
 
-    filter._strategies = [];
-    filter._stores = [];
-    filter._framework = null;
-    filter.__proto__ = proto;
+    filterHandler.__proto__ = proto;
+    filterHandler._strategies = [];
+    filterHandler._stores = [];
 
-
-    return filter;
+    filterHandler.init();
+    return filterHandler;
 }
 
-function Filter() {
-
-    this.init();
-}
 
 proto.init = function init(options) {
     debug("初始化安全过滤器。");
@@ -43,7 +42,6 @@ proto.init = function init(options) {
     this._options = options;
     var connect = require("./framework/connect")();
     this._framework = connect;
-
 }
 
 /**
@@ -63,18 +61,9 @@ proto.use = function use(strategy) {
  * @param name
  * @param strategy
  */
-proto.store = function store(strategy) {
-    if (!strategy) {
-        return;
+proto.store = function store(store) {
+    if (store) {
+        this._stores.push(store);
     }
-    this._stores.push(strategy);
-}
-
-/**
- * 返回过滤器中间件
- */
-proto.filter = function filter(app, options) {
-    var self = this;
-    return this._framework.filter(app, self, options);
 }
 
