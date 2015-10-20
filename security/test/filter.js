@@ -7,7 +7,7 @@ var should = require("should");
 var express = require("express");
 var app = express();
 
-var security = require("../lib");
+var security = require("../");
 var filter = security.Filter();
 var store = security.FilterStore();
 

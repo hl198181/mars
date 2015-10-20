@@ -4,7 +4,7 @@
 
 var express = require("express")
     , request = require("supertest")
-    , security = require("../lib")
+    , security = require("../")
     , filter = security.Filter();
 
 describe("filter.all", function (done) {
