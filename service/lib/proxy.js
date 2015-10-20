@@ -11,7 +11,10 @@ var debug = require("debug")("mars-service-proxy");
 var proto = module.exports = function (options) {
 
     function proxy(type, options) {
-        return proxy.handler(type, options);
+        if (type && options) {
+            return proxy.handler(type, options);
+        }
+        return proxy;
     }
 
     proxy.__proto__ = proto;

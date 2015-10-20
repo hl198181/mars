@@ -36,7 +36,13 @@ describe('Resource', function () {
         modelFactory.reg(model);
         repository.use(modelFactory);
         // 注册proxy
-
+        var service = require("../../service/lib");
+        var proxy = service.Proxy();
+        proxy.use(service.ProxyY9({
+            token: "8fc50dd14a951318ca168e40a9fa1ec78d1110e058700c9affdbe6ab5eb6b931",
+            baseurl: "http://120.24.84.201:10080/ws-biz/service/action.yun9",
+            header: {}
+        }));
     });
 
     it('verify Model', function () {
@@ -63,5 +69,14 @@ describe('Resource', function () {
             should(resource.getBean(0)).have.property('allNums',6845);
             done();
         });
+    });
+
+    it('verify proxy',function() {
+        var service = require("../../service/lib");
+        var proxy = service.Proxy();
+        var strategy = proxy._strategy('Y9');
+        should(strategy).ok;
+        should(strategy).have.property('_token',
+            '8fc50dd14a951318ca168e40a9fa1ec78d1110e058700c9affdbe6ab5eb6b931');
     });
 });
