@@ -7,6 +7,7 @@
 'use strict';
 var repository = require("../lib");
 var modelFactory = require("../lib/model")();
+var should = require('should');
 
 
 describe("repository()", function () {
@@ -15,7 +16,7 @@ describe("repository()", function () {
      * 测试构造方法
      */
     it("repository", function () {
-        expect(typeof repository, "'function'");
+        should(typeof repository).eql('function');
     });
 
     /**
@@ -62,8 +63,8 @@ describe("repository()", function () {
             fields: [{name: "id", type: "string",required:true}]
         });
 
-        expect(modelFactory.get("demo")).toBeDefined();
-        expect(modelFactory.all().length).toBe(2);
+        should(modelFactory.get("demo")).ok;
+        should(modelFactory.all()).have.length(2);
     });
 
     /**
@@ -101,8 +102,8 @@ describe("repository()", function () {
         });
         var demo3 = modelFactory.get('demo3');
         var demo = modelFactory.get('demo');
-        expect(demo.converts['type']).toBeDefined();
-        expect(typeof demo3.converts['type']).toBe('function');
+        should(demo.converts['type']).ok;
+        should(typeof demo3.converts['type']).eql('function');
     });
 
     /**
@@ -110,14 +111,14 @@ describe("repository()", function () {
      */
     it("ModelFactory.get()", function () {
         var moduleConfig = modelFactory.get("demo");
-        expect(moduleConfig).toBeDefined();
+        should(moduleConfig).ok;
     });
 
     /**
      * 测试获取所有的模型配置
      */
     it("ModelFactory.all()", function () {
-        expect(modelFactory.all()).toBeDefined();
+        should(modelFactory.all()).ok;
     })
 
     /**
@@ -131,8 +132,8 @@ describe("repository()", function () {
             fields: []
         });
         repository.use(modelFactory1).use(modelFactory);
-        expect(repository.get("test")).toBeDefined();
-        expect(repository.get("demo")).toBeDefined();
+        should(repository.get("test")).ok;
+        should(repository.get("demo")).ok;
     });
 
     /**
@@ -141,8 +142,8 @@ describe("repository()", function () {
     it("repository.get()", function () {
         var repository2 = require("../lib");
         var model = repository2.get("demo");
-        expect(model).toBeDefined();
-        expect(model.modelName).toEqual('demo');
+        should(model).ok;
+        should(model.modelName).eql('demo');
     });
 
     /**
@@ -154,14 +155,14 @@ describe("repository()", function () {
             demo1:{id:"123",dddd:"不应该存在的字段"},
             lala:'不应该存在的字段'}},
             function(err,resource) {
-                expect(err).toBeNull();
-                expect(resource).toBeDefined();
-                expect(resource.get('orderno')).toEqual('B订单');
-                expect(resource.get('lala')).toBeUndefined();
-                expect(resource.get("demo1")).toBeDefined();
-                expect(resource.get("demo1").id).toEqual('123');
-                expect(resource.get("demo1.id")).toEqual('123');
-                expect(resource.get("demo1").dddd).toBeUndefined();
+                should(err).eql(null);
+                should(resource).ok;
+                should(resource.get('orderno')).eql('B订单');
+                should(resource.get('lala')).not.ok;
+                should(resource.get("demo1")).ok;
+                should(resource.get("demo1").id).eql('123');
+                should(resource.get("demo1.id")).eql('123');
+                should(resource.get("demo1").dddd).not.ok;
                 done();
         });
     });
@@ -172,10 +173,10 @@ describe("repository()", function () {
     it('Model.findOne()',function(done) {
         var demo = repository.get("demo");
         demo.findOne({},function(err,res) {
-            expect(err).toBeNull();
-            expect(res.get('type')).toBe('A类');
-            expect(res.getMeta('type')).toBe('A');
-            expect(res.get('orderno')).toEqual('A订单');
+            should(err).eql(null);
+            should(res.get('type')).eql('A类');
+            should(res.getMeta('type')).eql('A');
+            should(res.get('orderno')).eql('A订单');
             done();
         });
     });

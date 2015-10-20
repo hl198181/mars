@@ -68,7 +68,9 @@ proto.verify = function(data) {
             && !hasOwnProperty.call(obj,field.name)) {
             throw new Error(self.modelName+"," +field.name+' 字段不能为空')
         }
-        if (hasOwnProperty.call(obj,field.name)) {
+        if (hasOwnProperty.call(obj,field.name)
+            && obj[field.name] != undefined
+            && obj[field.name] != null) {
             // 校验类型是否正确
             if (field.type == 'boolean'
             && !util.isBoolean(obj[field.name])){

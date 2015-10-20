@@ -27,10 +27,6 @@
     "y9-mars-util": "^1.0.1"
   },
   "devDependencies": {
-    "jasmine-core": "^2.3.4",
-    "karma": "^0.13.10",
-    "karma-browserify": "^4.4.0",
-    "karma-chrome-launcher": "^0.2.1",
-    "karma-jasmine": "^0.3.6"
+    "should": "^7.1.0"
   }
 }
