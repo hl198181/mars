@@ -9,6 +9,7 @@
 var debug = require("debug")("mars-security");
 var express = require("express");
 var router = express.Router();
+var FilterRedirect = require("./filter-redirect");
 var Q = require("q");
 
 var registeredRoutes = false;
@@ -28,108 +29,75 @@ function doHandler(filter, item) {
 
     return function (req, res, next) {
         var attemptIndex = -1;//当前策略下标
-        var attempt = function () {
-            attemptIndex++;
 
-            var deferred = Q.defer();
-            var startegy = filter._strategies[attemptIndex];
-            startegy.filterItem = item;
-            startegy.req = req;
-            startegy.res = res;
+        //建立策略包装方法
+        var doStartegy = function (startegy) {
 
-            // 记录策略执行信息
-            var processInfo = {
-                name: startegy.constructor.name,
-                startTime: new Date().getTime(),
-                endTime: 0,
-                costTime: 0
-            };
+            //执行处理器
+            var handler = function (params) {
+                attemptIndex++;
 
-            //策略执行过程中出现错误。带上错误内容结束本次请求
-            startegy.error = function (err) {
-                processReject(deferred, {error: err || new Error('未知错误')});
-            }
+                var deferred = Q.defer();
 
-            //策略执行过程中需要重定向到指定页面
-            startegy.redirect = function (url, status) {
-                processReject(deferred, {action: "redirect", "stateCode": 302, "url": url});
-            }
-
-            //正常结束全部策略。后续的策略也将不再执行
-            startegy.pass = function () {
-                processReject(deferred, {});
-            }
-
-            //记录发生的错误，并继续执行策略
-            startegy.fail = function (error) {
-                processResolve(deferred, {error: error || new Error('未知错误')});
-            }
-
-
-            //策略执行成功,继续执行下一个策略
-            startegy.success = function () {
-                processResolve(deferred, {});
-            }
-
-            // 记录日志
-            var log = function (options) {
-                for (var item in options) {
-                    processInfo[item] = options[item];
-                }
-                processInfo['endTime'] = new Date().getTime();
-                processInfo['costTime'] = processInfo['endTime'] - processInfo['startTime'];
-                // 记录运行信息
-                debug('过滤策略执行完毕：' + JSON.stringify(processInfo, function (key, value) {
-                        if (key === 'error' && value) {
-                            return JSON.stringify(value.stack);
-                        }
-                        return value;
-                    }));
-            }
-
-            // 完成本次策略，执行下一个策略
-            var processResolve = function (deferred, options) {
-                deferred.resolve();
-                log(options);
-            }
-
-            // 结束策略循环
-            var processReject = function (deferred, options) {
-                deferred.reject();
-                if (options.error) {
-                    next(options.error);
+                //为策略初始化处理方法
+                startegy.error = function (err) {
+                    //出现错误,跳出策略执行过程
+                    error = error || new Error("exec startegy error.");
+                    deferred.reject(err);
                 }
 
-                log(options);
-
-                if (options.action === 'redirect') {
-                    res.statusCode = options.stateCode || 302;
-                    res.setHeader('Location', options.url);
-                    res.setHeader('Content-Length', '0');
-                    res.end();
-                } else {
-                    next();
+                //策略执行过程中需要重定向到指定页面,跳出策略执行
+                startegy.redirect = function (url, status) {
+                    deferred.reject(new FilterRedirect(url, status));
                 }
+
+                //正常执行next
+                var nextStartegy = function (params) {
+                    deferred.resolve(params);
+                }
+
+                startegy.next = nextStartegy;
+
+                //执行策略方法
+                startegy(req, res, item, params, nextStartegy);//执行过滤
+
+                return deferred.promise;
             }
 
-            startegy.filter();//执行过滤
-
-            return deferred.promise;
-
-        };
+            return handler;
+        }
 
         // 开始遍历执行策略
         var attempts = [];
+
         for (var i = 0; i < filter._strategies.length; i++) {
-            attempts.push(attempt);
+            attempts.push(doStartegy(filter._strategies[i]));
         }
+
         attempts.reduce(function (prev, current) {
             return prev.then(current);
-        }, Q()).then(function () {
-            next();
-        }, function () {
-        });
-
+        }, Q()).then(function (params) {
+                //成功执行,next;
+                next();
+            }, function (params) {
+                if (params) {
+                    if (params instanceof  Error) {
+                        next(params);
+                    } else if (params instanceof FilterRedirect) {
+                        res.statusCode = params._state;
+                        res.setHeader('Location', params._path);
+                        res.setHeader('Content-Length', '0');
+                        res.end();
+                    } else {
+                        //参数无法识别直接next
+                        next();
+                    }
+                } else {
+                    //没有代入参数,next
+                    next();
+                }
+            }
+        );
     }
 }
 

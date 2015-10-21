@@ -6,24 +6,23 @@
 
 'use strict';
 
-var util = require("util");
-var HandlerStrategy = require("../filter-handler");
 var debug = require("debug")("mars-security-handler-demo");
 
 
 module.exports = function (options) {
-    return new Handler(options);
+
+    var handler = function handler(req, res, item, params, next) {
+        debug("Demo处理器策略");
+
+        next({
+            "demo": "run"
+        });
+    }
+
+    handler._options = options || {};
+
+    return handler;
 };
 
-function Handler(options) {
-    this._options = options || {};
-}
 
-util.inherits(Handler, HandlerStrategy);
-
-Handler.prototype.filter = function filter() {
-    debug("Demo处理器策略");
-
-    this.success();
-}
 
