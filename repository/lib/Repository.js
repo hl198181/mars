@@ -19,7 +19,6 @@ var proto = module.exports = function (options) {
     repository.__proto__ = proto;
 
     repository._models = [];
-    repository._proxys = {};
     repository._options = options || {};
     repository.init();
 
@@ -32,7 +31,7 @@ proto.init = function init() {
 
 /***
  * 加载Model配置数据。
- * @param model
+ * @param model modelfactory
  * @returns {exports}
  */
 proto.use = function use(model) {
@@ -45,14 +44,13 @@ proto.use = function use(model) {
 }
 
 /**
- * 注入代理对象
- * @param proxy
+ * 增加单个model
+ * @param model
+ * @returns {proto}
  */
-proto.useProxy = function(proxy) {
-    if (!proxy) {
-        throw new Error('无效的代理');
-    }
-    this._proxys[proxy.type] = proxy;
+proto.model = function(model) {
+    this._models[model.modelName] = model;
+    return this;
 }
 
 /***

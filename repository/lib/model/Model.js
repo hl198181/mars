@@ -22,7 +22,6 @@ var proto = module.exports = function (options) {
 
     model.__proto__ = proto;
     model._options = options;
-    model._proxy = undefined;
     model.converts = options.converts||{};
 
     model.init();

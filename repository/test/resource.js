@@ -32,9 +32,7 @@ describe('Resource', function () {
                 }
             }
         });
-        var modelFactory = require("../lib/model")();
-        modelFactory.reg(model);
-        repository.use(modelFactory);
+        repository.model(model);
         // 注册proxy
         var service = require("y9-mars-service");
         var proxy = service.Proxy();
