@@ -65,7 +65,6 @@ Handler.prototype.launch = function launch(success, failed, done) {
         data: this._params
     }
 
-
     superagent.post(this._strategy._baseurl)
         .send(data)
         .set('Content-Type', 'application/json;charset=UTF-8')

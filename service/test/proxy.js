@@ -9,6 +9,7 @@
 var service = require("../");
 var should = require("should");
 var proxy = service.Proxy();
+var debug = require("debug")("mars-service-test")
 
 describe("Service", function () {
 
@@ -71,20 +72,23 @@ describe("Service", function () {
      * 代理策略处理器执行,由于单元测试是在浏览器进行，无法进行跨域操作。无法进行测试
      */
 
-    //it("service.Proxy()().launch()", function () {
-    //    proxy("Y9", {
-    //        action: "com.yun9.ws.biz.service.QueryProductInfoByIdService"
-    //    }).params({
-    //        "productid": "10000001447014"
-    //    }).launch(function (handler) {
-    //        //成功
-    //        expect(1).toEqual(1);
-    //    }, function (error) {
-    //        //失败
-    //        expect(1).toEqual(1);
-    //    }, function () {
-    //        //总是执行
-    //        expect(1).toEqual(1);
-    //    });
-    //});
+    it("service.Proxy()().launch()", function (done) {
+        debug("开始测试launch");
+        proxy("Y9", {
+            action: "com.yun9.ws.biz.service.QueryProductInfoByIdService"
+        }).params({
+            "productid": "10000001447014"
+        }).launch(function (res) {
+            //成功
+            debug("成功");
+            res.body.code.should.equal("100");
+        }, function (error) {
+            //失败
+            debug("失败");
+        }, function () {
+            //总是执行
+            debug("总是执行");
+            done();
+        });
+    });
 });
