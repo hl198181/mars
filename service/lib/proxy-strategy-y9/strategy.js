@@ -78,7 +78,9 @@ Handler.prototype.launch = function launch(success, failed, done) {
             } else {
                 failed(err, res);
             }
-            done();
+	    if (done){
+		done();
+	    }
         });
 
 }
