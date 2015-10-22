@@ -71,16 +71,23 @@ Handler.prototype.launch = function launch(success, failed, done) {
         .end(function (err, res) {
             if (res && res.ok) {
                 if (res.body.code === "100") {
-                    success(res);
+		    if (success){
+			success(res);
+		    }
                 } else {
-                    failed(new Error(res.body.cause), res);
-                }
+		    if (failed){
+			failed(new Error(res.body.cause), res);
+		    }
+                };
             } else {
-                failed(err, res);
-            }
+		if (failed){
+                    failed(err, res);
+		}
+            };
+	    
 	    if (done){
 		done();
-	    }
+	    };
         });
 
 }
