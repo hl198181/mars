@@ -11,5 +11,5 @@ var ProxyY9 = require("./proxy-strategy-y9");
 
 exports = module.exports;
 
-exports.Proxy = Proxy();
+exports.Proxy = Proxy;
 exports.ProxyY9 = ProxyY9;

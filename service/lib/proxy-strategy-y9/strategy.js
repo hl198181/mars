@@ -61,7 +61,7 @@ Handler.prototype.launch = function launch(success, failed, done) {
     var data = {
         token: this._strategy._token,
         action: this._action,
-        header: {},
+        header: this._header,
         data: this._params
     }
 

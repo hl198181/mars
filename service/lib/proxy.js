@@ -10,15 +10,17 @@ var debug = require("debug")("mars-service-proxy");
 
 var proto = module.exports = function (options) {
 
-    function proxy(type, options) {
-        if (type && options) {
-            return proxy.handler(type, options);
+    function proxy(options) {
+
+        return function (res, req, next) {
+            //将当前proxy写入请求对象
+            res.y9proxy = proxy;
         }
-        return proxy;
     }
 
     proxy.__proto__ = proto;
     proxy._strategies = {};
+    proxy._actions = {};
 
     return proxy;
 }
@@ -42,13 +44,31 @@ proto.handler = function handler(name, options) {
 }
 
 /**
+ * 通名称发送请求
+ * @param name
+ */
+proto.post = function post(name) {
+    //查找注册action
+    var action = this._actions[name];
+
+    if (!action) {
+        throw new Error('can not find action ' + name);
+    }
+
+    var handler = this.handler(action.proxy, {
+        action: action.action
+    }).params(action.params).header(action.header);
+
+    return handler;
+}
+
+/**
  * 加载代理策略
  */
 proto.use = function use(name, strategy) {
     if (!strategy) {
         strategy = name;
         name = strategy.name;
-    } else {
     }
 
     if (!name) {
@@ -56,6 +76,40 @@ proto.use = function use(name, strategy) {
     }
 
     this._strategies[name] = strategy;
+    return this;
+}
+
+/**
+ * 注册action
+ * @param name
+ * @param action
+ * @returns {exports}
+ */
+proto.action = function action(name, action) {
+
+    if (!action) {
+        action = name;
+        name = action.name;
+    }
+
+    if (!name) {
+        throw new Error("proxy action must have a name");
+    }
+
+    //检查action是否有action,proxy属性
+    if (!action.action) {
+        throw new Error("proxy action must have a action");
+    }
+
+    if (!action.proxy) {
+        throw new Error("proxy action must have a proxy");
+    }
+
+    //初始化参数
+    action.params = action.params || {}
+
+    this._actions[name] = action;
+
     return this;
 }
 

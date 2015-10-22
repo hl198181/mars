@@ -10,6 +10,7 @@ module.exports = Strategy;
 
 function Strategy() {
     this._params = {};
+    this._header = {};
 }
 
 
@@ -31,6 +32,17 @@ Strategy.prototype.params = function params(params) {
             this._params[key] = params[key];
         }
     }
+    return this;
+}
+
+Strategy.prototype.header = function header(header) {
+
+    if (header) {
+        for (var key in header) {
+            this._header[key] = header[key];
+        }
+    }
+
     return this;
 }
 
