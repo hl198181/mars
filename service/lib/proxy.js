@@ -15,6 +15,7 @@ var proto = module.exports = function (options) {
         return function (res, req, next) {
             //将当前proxy写入请求对象
             res.y9proxy = proxy;
+	    next();
         }
     }
 
