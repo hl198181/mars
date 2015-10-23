@@ -15,13 +15,15 @@ var proto = module.exports = function (options) {
         return function (res, req, next) {
             //将当前proxy写入请求对象
             res.y9proxy = proxy;
-	    next();
+            next();
         }
     }
 
     proxy.__proto__ = proto;
     proxy._strategies = {};
     proxy._actions = {};
+
+    proxy._actionField = options.actionField || 'y9action';
 
     return proxy;
 }
@@ -122,4 +124,26 @@ proto.action = function action(name, action) {
  */
 proto._strategy = function _strategy(name) {
     return this._strategies[name];
+}
+
+/**
+ * 发布服务
+ * @param proxyName
+ * @returns {Function}
+ */
+proto.service = function service(proxyName) {
+    var self = this;
+    return function (req, res, next) {
+        
+        req.y9proxy
+            .post("queryOrderList")
+            .params()
+            .launch(function (result) {
+                res.send(result.body);
+            }, function (error) {
+                res.send(error);
+            }, function () {
+
+            });
+    }
 }

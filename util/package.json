@@ -1,6 +1,6 @@
 {
   "name": "y9-mars-util",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "工具组件",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
     "karma": "^0.13.10",
     "karma-browserify": "^4.4.0",
     "karma-chrome-launcher": "^0.2.1",
-    "karma-jasmine": "^0.3.6"
+    "karma-jasmine": "^0.3.6",
+    "should": "^7.1.1"
   }
 }
