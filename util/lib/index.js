@@ -7,11 +7,11 @@
 'use strict';
 
 var array = require("./array");
-var util = require("./util");
+var common = require("./comon");
 var merge = require("./merge");
 
 exports = module.exports
 
 exports.Array = array;
-exports.Util = util;
+exports.Common = common;
 exports.Merge = merge;

@@ -13,7 +13,7 @@ describe("util", function () {
     });
 
     it("util.Util.createMethodArray()", function () {
-        should(typeof util.Util.createMethodArray).be.exactly("function");
+        should(typeof util.Common.createMethodArray).be.exactly("function");
     })
 
     it("util.Merge()", function () {
@@ -29,7 +29,7 @@ describe("util", function () {
             demo: "test"
         }
 
-        var r = util.Util.lookup(demo,"demo");
+        var r = util.Common.lookup(demo,"demo");
 
         r.should.be.equal("test");
     });
