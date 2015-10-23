@@ -19,6 +19,7 @@ var proto = module.exports = function (options) {
         }
     }
 
+    options = options || {};
     proxy.__proto__ = proto;
     proxy._strategies = {};
     proxy._actions = {};
@@ -131,19 +132,39 @@ proto._strategy = function _strategy(name) {
  * @param proxyName
  * @returns {Function}
  */
-proto.service = function service(proxyName) {
+proto.service = function service() {
     var self = this;
     return function (req, res, next) {
-        
-        req.y9proxy
-            .post("queryOrderList")
-            .params()
+        //从请求获取参数
+        var action = req.body[self._actionField];
+
+        var errResData = {
+            code: "500",
+        }
+
+        if (!action) {
+            errResData.cause = "请求参数中无法找到名称为:" + self._actionField + "的动作参数."
+            res.statusCode = 500;
+            res.send(errResData);
+            return;
+        }
+
+        if (!action.name) {
+            errResData.cause = "请求动作必须指定name."
+            res.statusCode = 500;
+            res.send(errResData);
+            return;
+        }
+
+        self.post(action.name)
+            .params(action.params)
             .launch(function (result) {
                 res.send(result.body);
             }, function (error) {
-                res.send(error);
+                errResData.cause = error.message;
+                res.statusCode = 500;
+                res.send(errResData);
             }, function () {
-
             });
     }
 }

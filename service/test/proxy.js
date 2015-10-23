@@ -9,7 +9,7 @@
 var service = require("../");
 var should = require("should");
 var proxy = service.Proxy();
-var debug = require("debug")("mars-service-test")
+var debug = require("debug")("mars-service-test");
 
 describe("Service", function () {
     /**
