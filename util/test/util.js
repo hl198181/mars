@@ -12,7 +12,7 @@ describe("util", function () {
 
     });
 
-    it("util.Util.createMethodArray()", function () {
+    it("util.Common.createMethodArray()", function () {
         should(typeof util.Common.createMethodArray).be.exactly("function");
     })
 

@@ -8,7 +8,6 @@
 
 
 var marsUtil = require('y9-mars-util');
-var repository = require("../");
 var Q = require("q");
 
 /**
@@ -74,7 +73,8 @@ proto._convertData = function (data, meta, fields, convertCallbackFn) {
                 && meta[field.name]
                 && (field.ref || field.model)) {
                 data[field.name] = {};
-                var childFields = field.model ? field.model.fields : repository.get(field.ref).getConfig().fields;
+                var childFields = field.model ? field.model.fields
+                    : self._model.y9Repository.get(field.ref).getConfig().fields;
                 self._convertData(data[field.name], meta[field.name], childFields, function (err, data) {
                     if (err) {
                         defered.reject();
@@ -92,7 +92,8 @@ proto._convertData = function (data, meta, fields, convertCallbackFn) {
                 data[field.name] = [];
                 var childMetas = meta[field.name];
                 var childDatas = data[field.name];
-                var childFields = field.model ? field.model.fields : repository.get(field.ref).getConfig().fields;
+                var childFields = field.model ? field.model.fields
+                    : self._model.y9Repository.get(field.ref).getConfig().fields;
 
                 var index = -1;
                 var convertChildData = function() {
@@ -113,7 +114,7 @@ proto._convertData = function (data, meta, fields, convertCallbackFn) {
                     });
                     return childDefered.promise;
                 }
-                var fns = marsUtil.Util.createMethodArray(convertChildData,childMetas.length);
+                var fns = marsUtil.Common.createMethodArray(convertChildData,childMetas.length);
                 fns.reduce(function(prev,current) {
                     return prev.then(current);
                 },Q()).then(function() {
@@ -133,7 +134,7 @@ proto._convertData = function (data, meta, fields, convertCallbackFn) {
             delete self._model;
             delete self._dataReadyFn;
         }
-    var fns = marsUtil.Util.createMethodArray(convertField, fields.length);
+    var fns = marsUtil.Common.createMethodArray(convertField, fields.length);
     fns.push(function () {
         done(null, data);
     });

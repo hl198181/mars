@@ -12,8 +12,10 @@
  */
 var proto = module.exports = function (options) {
 
-    var repository = function () {
-
+    var repository = function (res, req, next) {
+        //repository
+        res.y9Repository = repository;
+        next();
     }
 
     repository.__proto__ = proto;
@@ -36,7 +38,7 @@ proto.init = function init() {
  */
 proto.use = function use(model) {
     model.all().map(function (item, i) {
-        this._models[item.modelName] = item;
+        this.model(item);
         return item;
     }, this);
 
@@ -49,6 +51,7 @@ proto.use = function use(model) {
  * @returns {proto}
  */
 proto.model = function(model) {
+    model.y9Repository = this;
     this._models[model.modelName] = model;
     return this;
 }

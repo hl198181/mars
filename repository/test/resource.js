@@ -5,14 +5,18 @@
  */
 
 'use strict';
-var repository = require("../lib");
+var rep = require("../lib");
+var repository = rep.Repository();
+var Model = rep.Model;
 var should = require('should');
+var service = require("y9-mars-service");
+var proxy = service.Proxy();
 
 describe('Resource', function () {
     before(function () {
         /**=====在所有测试之前，初始化数据*/
         // 注册model
-        var model = require("../lib/model/Model")({
+        var model = Model({
             name: 'WorkorderAnalysisUser',
             fields: [
                 {name: "page", type: "string", required: true},
@@ -34,9 +38,7 @@ describe('Resource', function () {
         });
         repository.model(model);
         // 注册proxy
-        var service = require("y9-mars-service");
-        var proxy = service.Proxy();
-        proxy.use(service.ProxyY9({
+        proxy.use("Y9",service.ProxyY9({
             token: "8fc50dd14a951318ca168e40a9fa1ec78d1110e058700c9affdbe6ab5eb6b931",
             baseurl: "http://120.24.84.201:10080/ws-biz/service/action.yun9",
             header: {}
@@ -70,8 +72,6 @@ describe('Resource', function () {
     });
 
     it('verify proxy',function() {
-        var service = require("y9-mars-service");
-        var proxy = service.Proxy();
         var strategy = proxy._strategy('Y9');
         should(strategy).ok;
         should(strategy).have.property('_token',
@@ -80,7 +80,7 @@ describe('Resource', function () {
 
     it('resource find',function(done) {
         var model = repository.get('WorkorderAnalysisUser');
-        model.find(
+        model.action(proxy,
             {beginDate:'1420041600000',
                 endDate:'1451577600000'},
             function(err,resource) {
