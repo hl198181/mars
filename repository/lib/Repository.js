@@ -66,13 +66,13 @@ proto.service = function() {
             res.send(errResData);
             return;
         }
-        model.action(req.y9proxy,params,function(err,res) {
+        model.action(req.y9proxy,params,function(err,resource) {
             if (err) {
                 errResData.cause = err.message;
                 res.statusCode = 500;
                 res.send(errResData);
             } else {
-                res.send(res.toJSON());
+                res.send(resource.toJSON());
             }
         });
     }
