@@ -38,7 +38,7 @@ describe('Resource', function () {
         });
         repository.model(model);
         // 注册proxy
-        proxy.use("Y9",service.ProxyY9({
+        proxy.use("Y9", service.ProxyY9({
             token: "8fc50dd14a951318ca168e40a9fa1ec78d1110e058700c9affdbe6ab5eb6b931",
             baseurl: "http://120.24.84.201:10080/ws-biz/service/action.yun9",
             header: {}
@@ -51,44 +51,52 @@ describe('Resource', function () {
         should(typeof model).eql('function');
     });
 
-    it('verify resource with static data',function(done) {
+    it('verify resource with static data', function (done) {
         var model = repository.get('WorkorderAnalysisUser');
-        model({data:{
-            "page": null,
-            "userid": null,
-            "allNums": 6845,
-            "completeNums": 0,
-            "inserviceNums": 0,
-            "waitNums": 6845,
-            "comleterate": 0,
-            "laterate": 1
-        }},function(err,resource) {
+        model({
+            data: {
+                "page": null,
+                "userid": null,
+                "allNums": 6845,
+                "completeNums": 0,
+                "inserviceNums": 0,
+                "waitNums": 6845,
+                "comleterate": 0,
+                "laterate": 1
+            }
+        }, function (err, resource) {
             should(err).not.ok;
             should(resource).ok;
             should(resource).have.property('getBean');
-            should(resource.getBean(0)).have.property('allNums',6845);
+            should(resource.getBean(0)).have.property('allNums', 6845);
             done();
         });
     });
 
-    it('verify proxy',function() {
+    it('verify proxy', function () {
         var strategy = proxy._strategy('Y9');
         should(strategy).ok;
         should(strategy).have.property('_token',
             '8fc50dd14a951318ca168e40a9fa1ec78d1110e058700c9affdbe6ab5eb6b931');
     });
 
-    it('resource find',function(done) {
+    it('resource find', function (done) {
         var model = repository.get('WorkorderAnalysisUser');
         model.action(proxy,
-            {beginDate:'1420041600000',
-                endDate:'1451577600000'},
-            function(err,resource) {
-            should(err).not.ok;
-            should(resource).ok;
-            should(resource.getBean(0)).ok;
-            should(resource.get('allNums')).not.empty;
-            done();
-        });
+            {
+                beginDate: '1420041600000',
+                endDate: '1451577600000'
+            },
+            function (err, resource) {
+                should(err).not.ok;
+                should(resource).ok;
+                should(resource.getBean(0)).ok;
+                should(resource.get('allNums')).not.empty;
+                var json = resource.toJSON();
+                should(json).have.property('header');
+                should(json).have.property('rows');
+                should(json).have.property('caches');
+                done();
+            });
     });
 });

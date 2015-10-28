@@ -197,6 +197,7 @@ proto.toJSON = function() {
     var self = this;
     return {
         header:self.getHeader(),
-        rows:self.getRows()
+        rows:self.getRows(),
+        caches:self._caches
     };
 }
