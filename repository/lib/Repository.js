@@ -66,7 +66,7 @@ proto.service = function() {
             res.send(errResData);
             return;
         }
-        model.action(rq.y9proxy,params,function(err,res) {
+        model.action(req.y9proxy,params,function(err,res) {
             if (err) {
                 errResData.cause = err.message;
                 res.statusCode = 500;
