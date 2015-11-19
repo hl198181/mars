@@ -7,10 +7,8 @@
 'use strict';
 
 var resource = require('../resource');
-var repository = require("../");
 var util = require('util');
 var marsUtil = require('y9-mars-util');
-var service = require('y9-mars-service');
 var Q = require("q");
 
 var proto = module.exports = function (options) {
@@ -89,7 +87,7 @@ proto.verify = function(data) {
                     throw new Error(self.modelName+"," +field.name+' 字段必须为object类型');
                 }
                 if (field.ref) {
-                    var m = repository.get(field.ref);
+                    var m = self.y9Repository.get(field.ref);
                     m.verify(data[field.name]);
                 } else if (field.model && field.model.fields) {
                     field.model.fields.forEach(function(childField) {
@@ -102,7 +100,7 @@ proto.verify = function(data) {
                     throw new Error(self.modelName+"," +field.name+' 字段必须为array类型');
                 }
                 if (field.ref) {
-                    var m = repository.get(field.ref);
+                    var m = self.y9Repository.get(field.ref);
                     data[field.name].forEach(function(arrayData) {
                         m.verify(arrayData);
                     });
@@ -139,16 +137,16 @@ proto.convert = function (name,callback) {
 
 /**
  * 根据参数查找一个资源
+ * @param proxy 代理对象
  * @param params 查询条件
  * @param callback 回调函数
  */
-proto.find = function(params,callback) {
+proto.action = function(proxy,params,callback) {
     if (!this._options.proxy) {
         throw new Err('Model:'+this._modelName+",未配置proxy");
     }
     var proxyConfig = this._options.proxy;
     var self = this;
-    var proxy = service.Proxy;
     var oneParams = {};
     if (proxyConfig.params) {
         marsUtil.Merge(oneParams,proxyConfig.params);
@@ -156,7 +154,7 @@ proto.find = function(params,callback) {
     if (params) {
         marsUtil.Merge(oneParams,params);
     }
-    proxy(proxyConfig.type,{
+    proxy.handler(proxyConfig.type,{
         action:proxyConfig.action
     }).params(oneParams).launch(function(result){
         self.toResource(result.body,callback);
@@ -207,7 +205,7 @@ proto.toResources = function(datas,dataReadyFn) {
         });
         return defered.promise;
     }
-    var fns = marsUtil.Util.createMethodArray(toModel,datas.length);
+    var fns = marsUtil.Common.createMethodArray(toModel,datas.length);
     fns.push(function() {
         dataReadyFn(null,ms);
     });

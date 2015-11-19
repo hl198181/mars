@@ -8,4 +8,10 @@
 'use strict';
 
 var repository = require("./repository");
-module.exports = repository();
+var modelFactory = require('./model');
+var model = require('./model/model');
+
+exports = module.exports
+exports.Repository = repository;
+exports.Model = model;
+exports.ModelFactory = modelFactory;

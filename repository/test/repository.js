@@ -5,8 +5,9 @@
  */
 
 'use strict';
-var repository = require("../lib");
-var modelFactory = require("../lib/model")();
+var rep = require("../lib");
+var repository = rep.Repository();
+var modelFactory = rep.ModelFactory();
 var should = require('should');
 
 
@@ -119,31 +120,6 @@ describe("repository()", function () {
      */
     it("ModelFactory.all()", function () {
         should(modelFactory.all()).ok;
-    })
-
-    /**
-     * 测试资源仓库使用模型配置
-     */
-    it("repository.use()", function () {
-        var modelFactory1 = require("../lib/model")().reg("test", {
-            fields: []
-        }).reg({
-            name: "test1",
-            fields: []
-        });
-        repository.use(modelFactory1).use(modelFactory);
-        should(repository.get("test")).ok;
-        should(repository.get("demo")).ok;
-    });
-
-    /**
-     * 测试资源仓库根据名称获取模型配置
-     */
-    it("repository.get()", function () {
-        var repository2 = require("../lib");
-        var model = repository2.get("demo");
-        should(model).ok;
-        should(model.modelName).eql('demo');
     });
 
 });
