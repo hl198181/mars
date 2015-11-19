@@ -75,21 +75,22 @@ passport.deserializeUser(function (user, done) {
 app.post("/auth", passport.authenticate('local', {
     successRedirect: "/hello",
     failureRedirect: "/login",
-    failureFlash:true
+    failureFlash: true
 }));
 
 //注册过滤器处理器策略
 securityFilter.use(new mars.SecurityFilter.LocalLoginHandler({
-    validLogin:function (req, item, done) {
-        setTimeout(function() {
+    validLogin: function (req, item, done) {
+        setTimeout(function () {
             if (req.isAuthenticated()) {
                 done(true);
             } else {
                 done(false);
             }
-        },1000);
+        }, 1000);
     }
 }));
+securityFilter.use(new mars.SecurityFilter.LocalInstHandler());
 securityFilter.use(new mars.SecurityFilter.LocalRoleHandler());
 
 //注册其他自定义安全过滤器,过滤器是顺序执行的
