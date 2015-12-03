@@ -24,7 +24,7 @@ InstPassport.prototype.init = function () {
     }
 };
 
-InstPassport.prototype.deserializeUser = function (fn, done) {
+InstPassport.prototype.deserializeUser = function (fn, done,req) {
     if (typeof fn === "function") {
         this._deserializeUser = fn;
         return;
@@ -34,7 +34,7 @@ InstPassport.prototype.deserializeUser = function (fn, done) {
 
     this._deserializeUser(inst, function (error, inst) {
         done(error, inst);
-    });
+    },req);
 };
 
 InstPassport.prototype.setInst = function (options) {
