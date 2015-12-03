@@ -61,7 +61,7 @@ InstPassport.prototype.setInst = function (options) {
 
                 next();
             }
-        });
+        },req);
     }
 };
 
