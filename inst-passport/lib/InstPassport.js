@@ -57,8 +57,16 @@ InstPassport.prototype.setInst = function (options) {
                     req._instPassport.session.inst = inst;
 
                     req.session[self._key] = req._instPassport.session;
-                }
 
+                    if (options.successReturnToOrRedirect) {
+                        var url = options.successReturnToOrRedirect;
+                        if (req.session && req.session.returnTo) {
+                            url = req.session.returnTo;
+                            delete req.session.returnTo;
+                        }
+                        return res.redirect(url);
+                    }
+                }
                 next();
             }
         },req);
@@ -76,6 +84,7 @@ InstPassport.prototype.initialize = function (options) {
         //如果在session中存在机构信息则记录
         if (req.session && req.session[self._key]) {
             req._instPassport.session = req.session[self._key];
+            req[self._instProperty] = req.session[self._key][self._instProperty];
         }
 
         next();
