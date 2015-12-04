@@ -156,8 +156,6 @@ proto.service = function service() {
             return;
         }
 
-        debug("执行服务调用.", action);
-
         self.post(action.name)
             .params(action.params)
             .launch(function (result) {

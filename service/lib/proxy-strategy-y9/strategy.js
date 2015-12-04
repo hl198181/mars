@@ -8,6 +8,7 @@
 var superagent = require("superagent");
 var proxyStrategy = require("../proxy-strategy");
 var util = require("util");
+var debug = require("debug")("y9-mars-service-proxy-strategy-y9");
 
 var proto = module.exports = function (options) {
     function Y9(options) {
@@ -63,31 +64,32 @@ Handler.prototype.launch = function launch(success, failed, done) {
         action: this._action,
         header: this._header,
         data: this._params
-    }
+    };
 
+    debug("执行Y9服务调用.", data);
     superagent.post(this._strategy._baseurl)
         .send(data)
         .set('Content-Type', 'application/json;charset=UTF-8')
         .end(function (err, res) {
+
             if (res && res.ok) {
                 if (res.body.code === "100") {
-		    if (success){
-			success(res);
-		    }
+                    if (success) {
+                        success(res);
+                    }
                 } else {
-		    if (failed){
-			failed(new Error(res.body.cause), res);
-		    }
-                };
+                    if (failed) {
+                        failed(new Error(res.body.cause), res);
+                    }
+                }
             } else {
-		if (failed){
+                if (failed) {
                     failed(err, res);
-		}
-            };
-	    
-	    if (done){
-		done();
-	    };
+                }
+            }
+            if (done) {
+                done();
+            }
         });
 
 }
