@@ -24,7 +24,7 @@ InstPassport.prototype.init = function () {
     }
 };
 
-InstPassport.prototype.deserializeUser = function (fn, done,req) {
+InstPassport.prototype.deserializeUser = function (fn, user, done) {
     if (typeof fn === "function") {
         this._deserializeUser = fn;
         return;
@@ -32,9 +32,9 @@ InstPassport.prototype.deserializeUser = function (fn, done,req) {
 
     var inst = fn;
 
-    this._deserializeUser(inst, function (error, inst) {
+    this._deserializeUser(inst, user, function (error, inst) {
         done(error, inst);
-    },req);
+    });
 };
 
 InstPassport.prototype.setInst = function (options) {
@@ -46,7 +46,7 @@ InstPassport.prototype.setInst = function (options) {
     return function (req, res, next) {
         var instid = Y9Util.Common.lookup(req.body, self._instField) || Y9Util.Common.lookup(req.query, self._instField);
 
-        self.deserializeUser(instid, function (error, inst) {
+        self.deserializeUser(instid, req.user, function (error, inst) {
             if (error) {
                 next(error);
             } else {
@@ -69,7 +69,7 @@ InstPassport.prototype.setInst = function (options) {
                 }
                 next();
             }
-        },req);
+        });
     }
 };
 

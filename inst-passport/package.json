@@ -1,6 +1,6 @@
 {
   "name": "y9-mars-inst-passport",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "处理机构session信息",
   "main": "index.js",
   "scripts": {
