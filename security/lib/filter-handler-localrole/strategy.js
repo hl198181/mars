@@ -6,7 +6,7 @@
 
 'use strict';
 
-var debug = require("debug")("mars-security-local-role");
+var debug = require("debug")("y9-mars-security-local-role");
 var y9util = require("y9-mars-util");
 
 exports = module.exports = function (options) {

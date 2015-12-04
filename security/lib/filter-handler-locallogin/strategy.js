@@ -6,7 +6,7 @@
 
 'use strict';
 
-var debug = require("debug")("mars-security-local");
+var debug = require("debug")("y9-mars-security-local");
 
 exports = module.exports = function (options) {
     var handler = function (req, res, item, params, next) {
