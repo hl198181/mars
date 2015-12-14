@@ -22,6 +22,12 @@ InstPassport.prototype.init = function () {
     http.IncomingMessage.prototype.isExisInst = function () {
         return (this.session && this.session[self._key] && this.session[self._key][self._instProperty]) ? true : false;
     }
+
+    http.IncomingMessage.prototype.logoutInst = function () {
+        if (this.session && this.session[self._key] && this.session[self._key]) {
+            delete this.session[self._key];
+        }
+    }
 };
 
 InstPassport.prototype.deserializeUser = function (fn, user, done) {
