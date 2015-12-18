@@ -1,0 +1,35 @@
+{
+  "author": {
+    "name": "Leon"
+  },
+  "name": "y9-wx-api",
+  "description": "微信公众平台API",
+  "version": "0.0.1",
+  "homepage": "https://github.com/hl198181/mars/wx-api",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hl198181/mars.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hl198181/mars/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "sha1": "1.0.1",
+    "xml2js": "0.2.6"
+  },
+  "scripts": {
+  },
+  "keywords": [
+    "微信",
+    "API",
+    "weixin",
+    "wechat"
+  ],
+  "devDependencies": {
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

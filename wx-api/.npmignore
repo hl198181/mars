@@ -1,0 +1,11 @@
+examples
+karma.conf.js
+node_modules
+*.log
+test
+tests
+.DS_Store
+.idea
+.git
+.gitignore
+.npmignore
