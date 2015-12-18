@@ -158,6 +158,7 @@ proto.service = function service() {
 
         self.post(action.name)
             .params(action.params)
+            .header(action.header)
             .launch(function (result) {
                 res.send(result.body);
             }, function (error) {
