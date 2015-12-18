@@ -9,3 +9,5 @@ tests
 .git
 .gitignore
 .npmignore
+figures
+Makefile
