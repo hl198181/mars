@@ -15,7 +15,7 @@ exports = module.exports = function (options) {
      */
     function getDeviceRedirect(req,redirects) {
         // 微信内置浏览器：
-        redirects.micromessenger = redirects.weixin;
+        redirects.micromessenger = redirects.micromessenger || redirects.weixin;
         var deviceAgent = req.headers["user-agent"].toLowerCase();
         for (var r in redirects) {
             if (deviceAgent.match(r.toLowerCase()) && redirects[r]) {
