@@ -9,6 +9,21 @@
 var debug = require("debug")("y9-mars-security-local");
 
 exports = module.exports = function (options) {
+
+    /**
+     * 根据设备信息，决定调整地址
+     */
+    function getDeviceRedirect(req,redirects) {
+        // 微信内置浏览器：
+        redirects.micromessenger = redirects.weixin;
+        var deviceAgent = req.headers["user-agent"].toLowerCase();
+        for (var r in redirects) {
+            if (deviceAgent.match(r.toLowerCase()) && redirects[r]) {
+                return redirects[r];
+            }
+        }
+        return redirects.default;
+    }
     var handler = function (req, res, item, params, next) {
         debug("执行本地过滤器策略！");
         //检查是否要求登录系统
@@ -21,7 +36,11 @@ exports = module.exports = function (options) {
                     next();
                 } else {
                     debug("未登录系统！");
-                    handler.redirect(handler._failureRedirect);
+                    if (typeof handler._failureRedirect == 'string') {
+                        handler.redirect(handler._failureRedirect);
+                    } else if (typeof handler._failureRedirect == 'object') {
+                        handler.redirect(getDeviceRedirect(req,handler._failureRedirect));
+                    }
                 }
             });
         } else {
