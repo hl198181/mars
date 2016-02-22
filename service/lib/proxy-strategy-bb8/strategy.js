@@ -75,10 +75,13 @@ Handler.prototype.launch = function launch(success, failed, done) {
         .end(function (err, res) {
             if (res && res.ok) {
                 if (res.statusCode === 200) {
+                    //由于其他框架依靠code检查是否成功
+                    res.body.code = "100";
                     if (success) {
                         success(res);
                     }
                 } else {
+                    res.body.code = res.statusCode;
                     if (failed) {
                         failed(new Error(res.body.cause), res);
                     }
