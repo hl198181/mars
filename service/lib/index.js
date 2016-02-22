@@ -8,8 +8,10 @@
 
 var Proxy = require("./proxy");
 var ProxyY9 = require("./proxy-strategy-y9");
+var ProxyBB8 = require("./proxy-strategy-bb8");
 
 exports = module.exports;
 
 exports.Proxy = Proxy;
 exports.ProxyY9 = ProxyY9;
+exports.ProxyBB8 = ProxyBB8;

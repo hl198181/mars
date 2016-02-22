@@ -1,42 +1,49 @@
-/*!
- * mars
- * Copyright(c) 2015 Leon Huang
- * MIT Licensed
+/**
+ * Created by leon on 16/2/22.
  */
 
+
 'use strict';
+
 var superagent = require("superagent");
 var proxyStrategy = require("../proxy-strategy");
 var util = require("util");
-var debug = require("debug")("y9-mars-service-proxy-strategy-y9");
+var debug = require("debug")("y9-mars-service-proxy-strategy-bb8");
 
 var proto = module.exports = function (options) {
-    function Y9(options) {
+    function BB8(options) {
         //返回处理器
         var handler = new Handler(options);
         return handler;
     }
 
-    Y9.__proto__ = proto;
+    BB8.__proto__ = proto;
 
     var options = options || {},
-        token = options.token || undefined,
+        AppID = options.AppID || undefined,
+        AppSecret = options.AppSecret || undefined,
         baseurl = options.baseurl || undefined;
 
-    if (!token) {
-        throw new Error("must set token!");
+    if (!AppID) {
+        throw new Error("must set AppID!");
+    }
+
+    if (!AppSecret) {
+        throw new Error("must set AppSecret!");
     }
 
     if (!baseurl) {
         throw new Error("must set baseurl!");
     }
 
-    Y9._options = options;
-    Y9._token = token;
-    Y9._baseurl = baseurl;
+    BB8._options = options;
+    BB8._AppID = AppID;
+    BB8._AppSecret = AppSecret;
+    BB8._baseurl = baseurl;
 
-    return Y9;
+    return BB8;
 };
+
 
 function Handler(options) {
     this._options = options || {};
@@ -51,6 +58,7 @@ function Handler(options) {
 
     proxyStrategy.call(this);
 }
+
 /**
  * 继承自 `ProxyStrategy`.
  */
@@ -58,22 +66,15 @@ util.inherits(Handler, proxyStrategy);
 
 
 Handler.prototype.launch = function launch(success, failed, done) {
+    var url = this._strategy._baseurl + this._action.path;
 
-    var data = {
-        token: this._strategy._token,
-        action: this._action.action,
-        header: this._header,
-        data: this._params
-    };
-
-    debug("执行Y9服务调用.", data);
-    superagent.post(this._strategy._baseurl)
-        .send(data)
+    superagent.get(url)
         .set('Content-Type', 'application/json;charset=UTF-8')
+        .auth(this._strategy._AppID, this._strategy._AppSecret)
+        .query(this._params || {})
         .end(function (err, res) {
-
             if (res && res.ok) {
-                if (res.body.code === "100") {
+                if (res.statusCode === 200) {
                     if (success) {
                         success(res);
                     }
@@ -90,6 +91,5 @@ Handler.prototype.launch = function launch(success, failed, done) {
             if (done) {
                 done();
             }
-        });
-
-}
+        })
+};
