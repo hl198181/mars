@@ -66,7 +66,18 @@ util.inherits(Handler, proxyStrategy);
 
 
 Handler.prototype.launch = function launch(success, failed, done) {
-    var url = this._strategy._baseurl + this._action.path;
+    var path = this._action.path;
+    if (this._params) {
+        var tempKey;
+        for (var key in this._params) {
+            tempKey = "{"+key+"}";
+            if (path.indexOf(tempKey) > 0) {
+                path = path.replace(tempKey,this._params[key]);
+            }
+        }
+        path = path.replace(/\/{[^}]*}/,""); // 删除没有匹配到变量
+    }
+    var url = this._strategy._baseurl + path;
 
     superagent.get(url)
         .set('Content-Type', 'application/json;charset=UTF-8')
@@ -74,6 +85,10 @@ Handler.prototype.launch = function launch(success, failed, done) {
         .query(this._params || {})
         .end(function (err, res) {
             if (res && res.ok) {
+                if (!res.body.data) {
+                    res.body.data = res.body;
+                    res.body = {};
+                }
                 if (res.statusCode === 200) {
                     //由于其他框架依靠code检查是否成功
                     res.body.code = "100";
