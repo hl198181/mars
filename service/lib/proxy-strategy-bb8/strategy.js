@@ -86,8 +86,9 @@ Handler.prototype.launch = function launch(success, failed, done) {
         .end(function (err, res) {
             if (res && res.ok) {
                 if (!res.body.data) {
-                    res.body.data = res.body;
+                    var tbody = res.body;
                     res.body = {};
+                    res.body.data = tbody;
                 }
                 if (res.statusCode === 200) {
                     //由于其他框架依靠code检查是否成功
