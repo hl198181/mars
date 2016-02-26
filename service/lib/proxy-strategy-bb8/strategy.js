@@ -82,6 +82,7 @@ Handler.prototype.launch = function launch(success, failed, done) {
     superagent.get(url)
         .set('Content-Type', 'application/json;charset=UTF-8')
         .auth(this._strategy._AppID, this._strategy._AppSecret)
+        .set("Authorization",(this._strategy._AppID+":"+this._strategy._AppSecret).toString("base64"))
         .query(this._params || {})
         .end(function (err, res) {
             if (res && res.ok) {
