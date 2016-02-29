@@ -8,8 +8,8 @@ var should = require("should");
 describe("InvokActivitiRest", function () {
 
     it("invoked", function () {
-        request.get("http://www.yun9.com:8080/bb8-rest/service/repository/process-definitions")
-            .query({})
+        request.post("http://www.yun9.com:8080/bb8-rest/service/bb8/repository/bb8-action")
+            .query({actId:"usertask1"})
             .auth('kermit', 'kermit')
             .end(function (err,res) {
                 res.should.not.be.NaN;

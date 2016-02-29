@@ -66,6 +66,7 @@ util.inherits(Handler, proxyStrategy);
 
 
 Handler.prototype.launch = function launch(success, failed, done) {
+    var requestType = this._action.requestType || "get";
     var path = this._action.path;
     if (this._params) {
         var tempKey;
@@ -79,10 +80,9 @@ Handler.prototype.launch = function launch(success, failed, done) {
     }
     var url = this._strategy._baseurl + path;
 
-    superagent.get(url)
+    superagent[requestType](url)
         .set('Content-Type', 'application/json;charset=UTF-8')
         .auth(this._strategy._AppID, this._strategy._AppSecret)
-        .set("Authorization",(this._strategy._AppID+":"+this._strategy._AppSecret).toString("base64"))
         .query(this._params || {})
         .end(function (err, res) {
             if (res && res.ok) {
