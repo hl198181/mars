@@ -80,8 +80,13 @@ Handler.prototype.launch = function launch(success, failed, done) {
     }
     var url = this._strategy._baseurl + path;
 
-    superagent[requestType](url)
-        .set('Content-Type', 'application/json;charset=UTF-8')
+    var theRequest;
+    if (requestType == 'post' || requestType == 'put') {
+        theRequest = superagent[requestType](url,this._params || {});
+    } else {
+        theRequest = superagent[requestType](url);
+    }
+    theRequest.set('Content-Type', 'application/json;charset=UTF-8')
         .auth(this._strategy._AppID, this._strategy._AppSecret)
         .query(this._params || {})
         .end(function (err, res) {

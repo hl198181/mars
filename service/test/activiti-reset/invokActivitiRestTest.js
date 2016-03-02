@@ -8,13 +8,18 @@ var should = require("should");
 describe("InvokActivitiRest", function () {
 
     it("invoked", function () {
-        request.post("http://www.yun9.com:8080/bb8-rest/service/bb8/repository/bb8-action")
-            .query({actId:"usertask1"})
+        request.post("http://www.yun9.com:8080/bb8-rest/service/bb8/repository/bb8-audit-action",{
+            "auditDefId": "2",
+            "label": "反对",
+            "procdefId": "AxFightTask:1:3167497d-d6e7-11e5-89dc-8adafc82f0fa",
+            "actId": "startevent1"
+        })
+            .query({})
             .auth('kermit', 'kermit')
             .end(function (err,res) {
                 res.should.not.be.NaN;
             });
-    })
+    });
 
     it("supertest", function (done) {
 
