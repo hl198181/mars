@@ -74,6 +74,7 @@ Handler.prototype.launch = function launch(success, failed, done) {
             tempKey = "{"+key+"}";
             if (path.indexOf(tempKey) > 0) {
                 path = path.replace(tempKey,this._params[key]);
+                delete this._params[key];
             }
         }
         path = path.replace(/\/{[^}]*}/,""); // 删除没有匹配到变量
