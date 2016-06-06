@@ -1,0 +1,22 @@
+{
+  "name": "y9-mysql",
+  "version": "1.0.3",
+  "description": "Y9 Mysql数据连接管理",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hl198181/mars.git"
+  },
+  "author": "Leon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hl198181/mars/issues"
+  },
+  "homepage": "https://github.com/hl198181/mars#readme",
+  "dependencies": {
+    "mysql": "^2.10.2"
+  }
+}
