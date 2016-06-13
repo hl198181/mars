@@ -8,9 +8,8 @@
 
 var filter = require("../middleware/filter");
 
-module.exports = function () {
-    return {
-        "filter": filter
+module.exports = function() {
+  return {
+    "filter": filter
+  }
 }
-}
-
